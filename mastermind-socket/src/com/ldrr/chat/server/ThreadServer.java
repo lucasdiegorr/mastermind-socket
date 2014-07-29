@@ -26,7 +26,7 @@ public class ThreadServer implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public Socket getClient() {
 		return client;
 	}
@@ -38,15 +38,14 @@ public class ThreadServer implements Runnable {
 	public void run() {
 		String fromClient = null;
 		try {
-			System.out.println("A thread está ativa!!!");
 			while (!this.client.isClosed() && ((fromClient = reader.readUTF()) != null)) {
 				this.server.sendMessage(fromClient, this);
 			}
 		} catch (IOException e) {
 			this.server.disconnect(this.client);
+			this.server.sendMessage("O cliente desconectou do chat.", this);
 			e.printStackTrace();
 		}
-		System.out.println("A thread morreu!!!");
 	}
 
 }

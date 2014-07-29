@@ -20,27 +20,27 @@ public class ClientChat implements Runnable {
 	private DataInputStream reader;
 	private String clientName;
 	private ClientController controller;
-	
+
 	//CONSTRUCTORS
-	
+
 	public ClientChat(ClientController controller) {
 		connect("127.0.0.1", 5000);
 		this.controller = controller;
 		this.clientName = "Anônimo";
 	}
-	
+
 	public ClientChat(String address, int port, ClientController controller) {
 		connect(address, port);
 		this.controller = controller;
 		this.clientName = "Anônimo";
 	}
-	
+
 	public ClientChat(String address, int port, String clientName, ClientController controller) {
 		connect(address, port);
 		this.controller = controller;
 		this.clientName = clientName;
 	}
-	
+
 	private void connect(String address, int port) {
 		try {
 			this.socket = new Socket(address, port);
@@ -52,7 +52,7 @@ public class ClientChat implements Runnable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Runnable#run()
 	 */
@@ -61,19 +61,17 @@ public class ClientChat implements Runnable {
 		String messageFromServer;
 		try {
 			while (this.socket.isConnected() && ((messageFromServer = reader.readUTF()) != null)) {
-				System.out.println("Esperando mensagem do servidor...");
-				this.controller.receivedMessage(messageFromServer);
+				this.controller.sendMessageToView(messageFromServer);
 			}
 		} catch (IOException e) {
 			disconnect();
-			System.out.println("Adeus mundo cruel.");
 			e.printStackTrace();
 		}
 	}
 
 	public void sendMessage(String string) {
 		try {
-			this.writer.writeUTF(string);
+			this.writer.writeUTF(clientName +": " + string);
 			this.writer.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -91,4 +89,19 @@ public class ClientChat implements Runnable {
 		}
 	}
 
+	public Socket getSocket() {
+		return socket;
+	}
+	
+	public DataInputStream getReader() {
+		return reader;
+	}
+
+	public DataOutputStream getWriter() {
+		return writer;
+	}
+
+	public void setClientName(String clientName) {
+		this.clientName = clientName;
+	}
 }

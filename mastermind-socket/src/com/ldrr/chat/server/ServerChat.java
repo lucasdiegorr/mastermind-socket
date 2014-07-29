@@ -65,9 +65,6 @@ public class ServerChat {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		System.out.println("Depois de retirado o, a lista tem " + listClient.size() + " clientes.");
-		
 	}
 
 	/**
