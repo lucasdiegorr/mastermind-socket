@@ -5,4 +5,4 @@
  * @author Lucas Diego
  *
  */
-package com.ldrr.chat.server;
+package com.ldrr.server;

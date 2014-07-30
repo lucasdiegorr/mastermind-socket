@@ -1,4 +1,4 @@
-package com.ldrr.chat.server;
+package com.ldrr.server;
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;

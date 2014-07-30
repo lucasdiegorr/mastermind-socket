@@ -9,7 +9,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.JButton;
 import javax.swing.JTextField;
 
-import com.ldrr.chat.client.ClientController;
+import com.ldrr.client.ClientController;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -45,8 +45,7 @@ public class GameFrame {
 	private JLabel move_3;
 	private JLabel move_4;
 	private JButton btnSendSequence;
-	private JLabel[][] arrayLabels;
-	private int chance = 0;
+	private JLabel[][] arrayLabels = new JLabel[10][4];
 	private int index_collum = 0;
 	private int index_row = 0;
 
@@ -91,7 +90,6 @@ public class GameFrame {
 		frmMastermindGame.getContentPane().setLayout(null);
 
 		JPanel panelGame = new JPanel();
-		panelGame.setBackground(Color.WHITE);
 		panelGame.setBorder(new TitledBorder(null, "Game", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelGame.setBounds(6, 6, 253, 660);
 		frmMastermindGame.getContentPane().add(panelGame);
@@ -175,25 +173,25 @@ public class GameFrame {
 		panelChance_1.setBounds(16, 529, 160, 60);
 		panelGame.add(panelChance_1);
 		
-		JLabel label = new JLabel();
-		label.setBounds(4, 20, 35, 35);
-		populeArray(label,index_row,index_collum++);
-		panelChance_1.add(label);
+		JLabel labelChance11 = new JLabel();
+		labelChance11.setBounds(4, 20, 35, 35);
+		populeArray(labelChance11,index_row,index_collum++);
+		panelChance_1.add(labelChance11);
 		
-		JLabel label_1 = new JLabel();
-		label_1.setBounds(43, 20, 35, 35);
-		populeArray(label_1,index_row,index_collum++);
-		panelChance_1.add(label_1);
+		JLabel labelChance12 = new JLabel();
+		labelChance12.setBounds(43, 20, 35, 35);
+		populeArray(labelChance12,index_row,index_collum++);
+		panelChance_1.add(labelChance12);
 		
-		JLabel label_2 = new JLabel();
-		label_2.setBounds(82, 20, 35, 35);
-		populeArray(label_2,index_row, index_collum++);
-		panelChance_1.add(label_2);
+		JLabel labelChance13 = new JLabel();
+		labelChance13.setBounds(82, 20, 35, 35);
+		populeArray(labelChance13,index_row, index_collum++);
+		panelChance_1.add(labelChance13);
 		
-		JLabel label_3 = new JLabel();
-		label_3.setBounds(121, 20, 35, 35);
-		populeArray(label_3,index_row++,index_collum);
-		panelChance_1.add(label_3);
+		JLabel labelChance14 = new JLabel();
+		labelChance14.setBounds(121, 20, 35, 35);
+		populeArray(labelChance14,index_row++,index_collum);
+		panelChance_1.add(labelChance14);
 		index_collum = 0;
 		
 		JPanel panelChance_2 = new JPanel();
@@ -202,25 +200,25 @@ public class GameFrame {
 		panelChance_2.setBounds(16, 473, 160, 60);
 		panelGame.add(panelChance_2);
 		
-		JLabel label_4 = new JLabel();
-		label_4.setBounds(4, 20, 35, 35);
-		populeArray(label_4,index_row,index_collum++);
-		panelChance_2.add(label_4);
+		JLabel labelChance21 = new JLabel();
+		labelChance21.setBounds(4, 20, 35, 35);
+		populeArray(labelChance21,index_row,index_collum++);
+		panelChance_2.add(labelChance21);
 		
-		JLabel label_5 = new JLabel();
-		label_5.setBounds(43, 20, 35, 35);
-		populeArray(label_5,index_row,index_collum++);
-		panelChance_2.add(label_5);
+		JLabel labelChance22 = new JLabel();
+		labelChance22.setBounds(43, 20, 35, 35);
+		populeArray(labelChance22,index_row,index_collum++);
+		panelChance_2.add(labelChance22);
 		
-		JLabel label_6 = new JLabel();
-		label_6.setBounds(82, 20, 35, 35);
-		populeArray(label_6,index_row,index_collum++);
-		panelChance_2.add(label_6);
+		JLabel labelChance23 = new JLabel();
+		labelChance23.setBounds(82, 20, 35, 35);
+		populeArray(labelChance23,index_row,index_collum++);
+		panelChance_2.add(labelChance23);
 		
-		JLabel label_7 = new JLabel();
-		label_7.setBounds(121, 20, 35, 35);
-		populeArray(label_7,index_row++,index_collum++);
-		panelChance_2.add(label_7);
+		JLabel labelChance24 = new JLabel();
+		labelChance24.setBounds(121, 20, 35, 35);
+		populeArray(labelChance24,index_row++,index_collum++);
+		panelChance_2.add(labelChance24);
 		index_collum = 0;
 		
 		JPanel panelChance_3 = new JPanel();
@@ -229,24 +227,24 @@ public class GameFrame {
 		panelChance_3.setBounds(16, 418, 160, 60);
 		panelGame.add(panelChance_3);
 		
-		JLabel label_8 = new JLabel();
-		label_8.setBounds(4, 20, 35, 35);
-		populeArray(label_8,index_row,index_collum++);
-		panelChance_3.add(label_8);
+		JLabel labelChance31 = new JLabel();
+		labelChance31.setBounds(4, 20, 35, 35);
+		populeArray(labelChance31,index_row,index_collum++);
+		panelChance_3.add(labelChance31);
 		
-		JLabel label_9 = new JLabel();
-		populeArray(label_9,index_row,index_collum++);
-		panelChance_3.add(label_9);
+		JLabel labelChance32 = new JLabel();
+		populeArray(labelChance32,index_row,index_collum++);
+		panelChance_3.add(labelChance32);
 		
-		JLabel label_10 = new JLabel();
-		label_10.setBounds(82, 20, 35, 35);
-		populeArray(label_10,index_row,index_collum++);
-		panelChance_3.add(label_10);
+		JLabel labelChance33 = new JLabel();
+		labelChance33.setBounds(82, 20, 35, 35);
+		populeArray(labelChance33,index_row,index_collum++);
+		panelChance_3.add(labelChance33);
 		
-		JLabel label_11 = new JLabel();
-		label_11.setBounds(121, 20, 35, 35);
-		populeArray(label_11,index_row++,index_collum++);
-		panelChance_3.add(label_11);
+		JLabel labelChance34 = new JLabel();
+		labelChance34.setBounds(121, 20, 35, 35);
+		populeArray(labelChance34,index_row++,index_collum++);
+		panelChance_3.add(labelChance34);
 		index_collum = 0;
 		
 		JPanel panelChance_4 = new JPanel();
@@ -255,25 +253,25 @@ public class GameFrame {
 		panelChance_4.setBounds(16, 362, 160, 60);
 		panelGame.add(panelChance_4);
 		
-		JLabel label_12 = new JLabel();
-		label_12.setBounds(4, 20, 35, 35);
-		populeArray(label_12,index_row,index_collum++);
-		panelChance_4.add(label_12);
+		JLabel labelChance41 = new JLabel();
+		labelChance41.setBounds(4, 20, 35, 35);
+		populeArray(labelChance41,index_row,index_collum++);
+		panelChance_4.add(labelChance41);
 		
-		JLabel label_13 = new JLabel();
-		label_13.setBounds(43, 20, 35, 35);
-		populeArray(label_13,index_row,index_collum++);
-		panelChance_4.add(label_13);
+		JLabel labelChance42 = new JLabel();
+		labelChance42.setBounds(43, 20, 35, 35);
+		populeArray(labelChance42,index_row,index_collum++);
+		panelChance_4.add(labelChance42);
 		
-		JLabel label_14 = new JLabel();
-		label_14.setBounds(82, 20, 35, 35);
-		populeArray(label_14,index_row,index_collum++);
-		panelChance_4.add(label_14);
+		JLabel labelChance43 = new JLabel();
+		labelChance43.setBounds(82, 20, 35, 35);
+		populeArray(labelChance43,index_row,index_collum++);
+		panelChance_4.add(labelChance43);
 		
-		JLabel label_15 = new JLabel();
-		label_15.setBounds(121, 20, 35, 35);
-		populeArray(label_15,index_row++,index_collum++);
-		panelChance_4.add(label_15);
+		JLabel labelChance44 = new JLabel();
+		labelChance44.setBounds(121, 20, 35, 35);
+		populeArray(labelChance44,index_row++,index_collum++);
+		panelChance_4.add(labelChance44);
 		index_collum = 0;
 		
 		JPanel panelChance_5 = new JPanel();
@@ -282,25 +280,25 @@ public class GameFrame {
 		panelChance_5.setBounds(16, 307, 160, 60);
 		panelGame.add(panelChance_5);
 		
-		JLabel label_16 = new JLabel();
-		label_16.setBounds(4, 20, 35, 35);
-		populeArray(label_16,index_row,index_collum++);
-		panelChance_5.add(label_16);
+		JLabel labelChance51 = new JLabel();
+		labelChance51.setBounds(4, 20, 35, 35);
+		populeArray(labelChance51,index_row,index_collum++);
+		panelChance_5.add(labelChance51);
 		
-		JLabel label_17 = new JLabel();
-		label_17.setBounds(43, 20, 35, 35);
-		populeArray(label_17,index_row,index_collum++);
-		panelChance_5.add(label_17);
+		JLabel labelChance52 = new JLabel();
+		labelChance52.setBounds(43, 20, 35, 35);
+		populeArray(labelChance52,index_row,index_collum++);
+		panelChance_5.add(labelChance52);
 		
-		JLabel label_18 = new JLabel();
-		label_18.setBounds(82, 20, 35, 35);
-		populeArray(label_18,index_row,index_collum++);
-		panelChance_5.add(label_18);
+		JLabel labelChance53 = new JLabel();
+		labelChance53.setBounds(82, 20, 35, 35);
+		populeArray(labelChance53,index_row,index_collum++);
+		panelChance_5.add(labelChance53);
 		
-		JLabel label_19 = new JLabel();
-		label_19.setBounds(121, 20, 35, 35);
-		populeArray(label_19,index_row++,index_collum++);
-		panelChance_5.add(label_19);
+		JLabel labelChance54 = new JLabel();
+		labelChance54.setBounds(121, 20, 35, 35);
+		populeArray(labelChance54,index_row++,index_collum++);
+		panelChance_5.add(labelChance54);
 		index_collum = 0;
 		
 		JPanel panelChance_6 = new JPanel();
@@ -309,25 +307,25 @@ public class GameFrame {
 		panelChance_6.setBounds(16, 252, 160, 60);
 		panelGame.add(panelChance_6);
 		
-		JLabel label_20 = new JLabel();
-		label_20.setBounds(4, 20, 35, 35);
-		populeArray(label_20,index_row,index_collum++);
-		panelChance_6.add(label_20);
+		JLabel labelChance61 = new JLabel();
+		labelChance61.setBounds(4, 20, 35, 35);
+		populeArray(labelChance61,index_row,index_collum++);
+		panelChance_6.add(labelChance61);
 		
-		JLabel label_21 = new JLabel();
-		label_21.setBounds(43, 20, 35, 35);
-		populeArray(label_21,index_row,index_collum++);
-		panelChance_6.add(label_21);
+		JLabel labelChance62 = new JLabel();
+		labelChance62.setBounds(43, 20, 35, 35);
+		populeArray(labelChance62,index_row,index_collum++);
+		panelChance_6.add(labelChance62);
 		
-		JLabel label_22 = new JLabel();
-		label_22.setBounds(82, 20, 35, 35);
-		populeArray(label_22,index_row,index_collum++);
-		panelChance_6.add(label_22);
+		JLabel labelChance63 = new JLabel();
+		labelChance63.setBounds(82, 20, 35, 35);
+		populeArray(labelChance63,index_row,index_collum++);
+		panelChance_6.add(labelChance63);
 		
-		JLabel label_23 = new JLabel();
-		label_23.setBounds(121, 20, 35, 35);
-		populeArray(label_23,index_row++,index_collum++);
-		panelChance_6.add(label_23);
+		JLabel labelChance64 = new JLabel();
+		labelChance64.setBounds(121, 20, 35, 35);
+		populeArray(labelChance64,index_row++,index_collum++);
+		panelChance_6.add(labelChance64);
 		index_collum = 0;
 		
 		JPanel panelChance_7 = new JPanel();
@@ -336,25 +334,25 @@ public class GameFrame {
 		panelChance_7.setBounds(16, 196, 160, 60);
 		panelGame.add(panelChance_7);
 		
-		JLabel label_24 = new JLabel();
-		label_24.setBounds(4, 20, 35, 35);
-		populeArray(label_24,index_row,index_collum++);
-		panelChance_7.add(label_24);
+		JLabel labelChance71 = new JLabel();
+		labelChance71.setBounds(4, 20, 35, 35);
+		populeArray(labelChance71,index_row,index_collum++);
+		panelChance_7.add(labelChance71);
 		
-		JLabel label_25 = new JLabel();
-		label_25.setBounds(43, 20, 35, 35);
-		populeArray(label_25,index_row,index_collum++);
-		panelChance_7.add(label_25);
+		JLabel labelChance72 = new JLabel();
+		labelChance72.setBounds(43, 20, 35, 35);
+		populeArray(labelChance72,index_row,index_collum++);
+		panelChance_7.add(labelChance72);
 		
-		JLabel label_26 = new JLabel();
-		label_26.setBounds(82, 20, 35, 35);
-		populeArray(label_26,index_row,index_collum++);
-		panelChance_7.add(label_26);
+		JLabel labelChance73 = new JLabel();
+		labelChance73.setBounds(82, 20, 35, 35);
+		populeArray(labelChance73,index_row,index_collum++);
+		panelChance_7.add(labelChance73);
 		
-		JLabel label_27 = new JLabel();
-		label_27.setBounds(121, 20, 35, 35);
-		populeArray(label_27,index_row++,index_collum++);
-		panelChance_7.add(label_27);
+		JLabel labelChance74 = new JLabel();
+		labelChance74.setBounds(121, 20, 35, 35);
+		populeArray(labelChance74,index_row++,index_collum++);
+		panelChance_7.add(labelChance74);
 		index_collum = 0;
 		
 		JPanel panelChance_8 = new JPanel();
@@ -363,25 +361,25 @@ public class GameFrame {
 		panelChance_8.setBounds(16, 140, 160, 60);
 		panelGame.add(panelChance_8);
 		
-		JLabel label_28 = new JLabel();
-		label_28.setBounds(4, 20, 35, 35);
-		populeArray(label_28,index_row,index_collum++);
-		panelChance_8.add(label_28);
+		JLabel labelChance81 = new JLabel();
+		labelChance81.setBounds(4, 20, 35, 35);
+		populeArray(labelChance81,index_row,index_collum++);
+		panelChance_8.add(labelChance81);
 		
-		JLabel label_29 = new JLabel();
-		label_29.setBounds(43, 20, 35, 35);
-		populeArray(label_29,index_row,index_collum++);
-		panelChance_8.add(label_29);
+		JLabel labelChance82 = new JLabel();
+		labelChance82.setBounds(43, 20, 35, 35);
+		populeArray(labelChance82,index_row,index_collum++);
+		panelChance_8.add(labelChance82);
 		
-		JLabel label_30 = new JLabel();
-		label_30.setBounds(82, 20, 35, 35);
-		populeArray(label_30,index_row,index_collum++);
-		panelChance_8.add(label_30);
+		JLabel labelChance83 = new JLabel();
+		labelChance83.setBounds(82, 20, 35, 35);
+		populeArray(labelChance83,index_row,index_collum++);
+		panelChance_8.add(labelChance83);
 		
-		JLabel label_31 = new JLabel();
-		label_31.setBounds(121, 20, 35, 35);
-		populeArray(label_31,index_row++,index_collum++);
-		panelChance_8.add(label_31);
+		JLabel labelChance84 = new JLabel();
+		labelChance84.setBounds(121, 20, 35, 35);
+		populeArray(labelChance84,index_row++,index_collum++);
+		panelChance_8.add(labelChance84);
 		index_collum = 0;
 		
 		JPanel panelChance_9 = new JPanel();
@@ -390,25 +388,25 @@ public class GameFrame {
 		panelChance_9.setBounds(16, 84, 160, 60);
 		panelGame.add(panelChance_9);
 		
-		JLabel label_32 = new JLabel();
-		label_32.setBounds(4, 20, 35, 35);
-		populeArray(label_32,index_row,index_collum++);
-		panelChance_9.add(label_32);
+		JLabel labelChance91 = new JLabel();
+		labelChance91.setBounds(4, 20, 35, 35);
+		populeArray(labelChance91,index_row,index_collum++);
+		panelChance_9.add(labelChance91);
 		
-		JLabel label_33 = new JLabel();
-		label_33.setBounds(43, 20, 35, 35);
-		populeArray(label_33,index_row,index_collum++);
-		panelChance_9.add(label_33);
+		JLabel labelChance92 = new JLabel();
+		labelChance92.setBounds(43, 20, 35, 35);
+		populeArray(labelChance92,index_row,index_collum++);
+		panelChance_9.add(labelChance92);
 		
-		JLabel label_34 = new JLabel();
-		label_34.setBounds(82, 20, 35, 35);
-		populeArray(label_34,index_row,index_collum++);
-		panelChance_9.add(label_34);
+		JLabel labelChance93 = new JLabel();
+		labelChance93.setBounds(82, 20, 35, 35);
+		populeArray(labelChance93,index_row,index_collum++);
+		panelChance_9.add(labelChance93);
 		
-		JLabel label_35 = new JLabel();
-		label_35.setBounds(121, 20, 35, 35);
-		populeArray(label_35,index_row++,index_collum++);
-		panelChance_9.add(label_35);
+		JLabel labelChance94 = new JLabel();
+		labelChance94.setBounds(121, 20, 35, 35);
+		populeArray(labelChance94,index_row++,index_collum++);
+		panelChance_9.add(labelChance94);
 		index_collum = 0;
 		
 		JPanel panelChance_10 = new JPanel();
@@ -417,25 +415,25 @@ public class GameFrame {
 		panelChance_10.setBounds(16, 30, 160, 60);
 		panelGame.add(panelChance_10);
 		
-		JLabel label_36 = new JLabel();
-		label_36.setBounds(4, 20, 35, 35);
-		populeArray(label_36,index_row,index_collum++);
-		panelChance_10.add(label_36);
+		JLabel labelChance101 = new JLabel();
+		labelChance101.setBounds(4, 20, 35, 35);
+		populeArray(labelChance101,index_row,index_collum++);
+		panelChance_10.add(labelChance101);
 		
-		JLabel label_37 = new JLabel();
-		label_37.setBounds(43, 20, 35, 35);
-		populeArray(label_37,index_row,index_collum++);
-		panelChance_10.add(label_37);
+		JLabel labelChance102 = new JLabel();
+		labelChance102.setBounds(43, 20, 35, 35);
+		populeArray(labelChance102,index_row,index_collum++);
+		panelChance_10.add(labelChance102);
 		
-		JLabel label_38 = new JLabel();
-		label_38.setBounds(82, 20, 35, 35);
-		populeArray(label_38,index_row,index_collum++);
-		panelChance_10.add(label_38);
+		JLabel labelChance103 = new JLabel();
+		labelChance103.setBounds(82, 20, 35, 35);
+		populeArray(labelChance103,index_row,index_collum++);
+		panelChance_10.add(labelChance103);
 		
-		JLabel label_39 = new JLabel();
-		label_39.setBounds(121, 20, 35, 35);
-		populeArray(label_39,index_row,index_collum++);
-		panelChance_10.add(label_39);
+		JLabel labelChance104 = new JLabel();
+		labelChance104.setBounds(121, 20, 35, 35);
+		populeArray(labelChance104,index_row,index_collum++);
+		panelChance_10.add(labelChance104);
 		index_collum = 0;
 		index_row = 0;
 		
@@ -670,7 +668,6 @@ public class GameFrame {
 		panel_8.add(label_79);
 
 		JPanel panelChat = new JPanel();
-		panelChat.setBackground(Color.WHITE);
 		panelChat.setBorder(new TitledBorder(null, "Chat", TitledBorder.LEADING, TitledBorder.TOP, null, Color.RED));
 		panelChat.setBounds(271, 256, 330, 410);
 		frmMastermindGame.getContentPane().add(panelChat);
@@ -682,8 +679,7 @@ public class GameFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				String message = null;;
 				if ((message = textToSend.getText()) != null) {
-					clientController.sendMessageToServer(textToSend.getText());
-					textAreaChat.setSelectedTextColor(Color.GREEN);
+					clientController.sendMessageToServerChat(textToSend.getText());
 					textAreaChat.append("eu: " + message + "\n");
 					textToSend.setText(null);
 					textToSend.requestFocus();
@@ -736,7 +732,7 @@ public class GameFrame {
 				btnDisconnect.setEnabled(false);
 				btnSend.setEnabled(false);
 				textToSend.setEditable(false);
-				clientController.disconnect();
+				clientController.disconnectFromChat();
 			}
 		});
 		btnDisconnect.setEnabled(false);
@@ -781,5 +777,26 @@ public class GameFrame {
 
 	public JTextArea getTextAreaChat() {
 		return textAreaChat;
+	}
+
+	/**
+	 * @return the arrayLabels
+	 */
+	public JLabel[][] getArrayLabels() {
+		return arrayLabels;
+	}
+
+	/**
+	 * @return the index_collum
+	 */
+	public int getIndex_collum() {
+		return index_collum;
+	}
+
+	/**
+	 * @return the index_row
+	 */
+	public int getIndex_row() {
+		return index_row;
 	}
 }

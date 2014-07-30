@@ -1,4 +1,4 @@
-package com.ldrr.chat.client;
+package com.ldrr.client;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -22,7 +22,6 @@ public class ClientChat implements Runnable {
 	private ClientController controller;
 
 	//CONSTRUCTORS
-
 	public ClientChat(ClientController controller) {
 		connect("127.0.0.1", 5000);
 		this.controller = controller;
@@ -61,7 +60,7 @@ public class ClientChat implements Runnable {
 		String messageFromServer;
 		try {
 			while (this.socket.isConnected() && ((messageFromServer = reader.readUTF()) != null)) {
-				this.controller.sendMessageToView(messageFromServer);
+				this.controller.sendMessageToViewChat(messageFromServer);
 			}
 		} catch (IOException e) {
 			disconnect();
