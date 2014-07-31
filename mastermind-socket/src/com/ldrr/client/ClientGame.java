@@ -23,17 +23,7 @@ public class ClientGame implements Runnable{
 
 	//CONSTRUCTORS
 	public ClientGame(ClientController controller) {
-		connect("127.0.0.1", 5500);
-		this.controller = controller;
-	}
-
-	public ClientGame(String address, int port, ClientController controller) {
-		connect(address, port);
-		this.controller = controller;
-	}
-
-	public ClientGame(String address, int port, String clientName, ClientController controller) {
-		connect(address, port);
+		connect("127.0.0.1", 6000);
 		this.controller = controller;
 	}
 
@@ -52,10 +42,14 @@ public class ClientGame implements Runnable{
 	
 	@Override
 	public void run() {
-		MessageGame messageFromServer;
+		MessageGame messageFromServer = null;
 		try {
 			while (this.socket.isConnected() && ((messageFromServer = (MessageGame) reader.readObject()) != null)) {
-				this.controller.sendSequenceToViewGame(messageFromServer.getColorResponse());
+				if (messageFromServer.getColorSequence() == null) {
+					this.controller.receiveidResponseGame(messageFromServer.getColorResponse());
+				}else {
+					this.controller.receivedSequenceGame(messageFromServer.getColorSequence());
+				}
 			}
 		} catch (Exception e) {
 			disconnect();
@@ -73,6 +67,18 @@ public class ClientGame implements Runnable{
 			e.printStackTrace();
 		}
 	}
+	
+	public void sendResponse(int[] sequence) {
+		MessageGame message = new MessageGame();
+		message.setColorResponse(sequence);
+		try {
+			this.writer.writeObject(message);
+			this.writer.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	
 	private void disconnect() {
 		try {
@@ -141,6 +147,7 @@ public class ClientGame implements Runnable{
 		this.message = message;
 	}
 
+	
 
 
 }

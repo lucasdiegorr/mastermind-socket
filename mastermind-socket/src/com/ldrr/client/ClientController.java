@@ -2,7 +2,6 @@ package com.ldrr.client;
 import java.io.IOException;
 
 import com.ldrr.graphic.GameFrame;
-import com.ldrr.graphic.Sprite;
 
 /**
  * 
@@ -17,27 +16,43 @@ public class ClientController {
 	private ClientChat clientChat;
 	private ClientGame clientGame;
 	private GameFrame gameFrame;
-	
+
 	public ClientController(GameFrame chatFrame) {
 		this.gameFrame = chatFrame;
 	}
-	
+
 	public void initChat() {
 		this.clientChat = new ClientChat(this);
 		new Thread(clientChat).start();
 	}
-	
+
 	public void initGame() {
 		this.clientGame = new ClientGame(this);
 		new Thread(clientGame).start();
 	}
-	
-	public void sendMessageToServerChat(String message) {
+
+	public void sendMessageChat(String message) {
 		this.clientChat.sendMessage(message);
 	}
 
-	public void sendMessageToViewChat(String message) {
-		this.gameFrame.getTextAreaChat().append(message + "\n");
+	public void sendSequenceColors(int[] sequence) {
+		this.clientGame.sendSequence(sequence);
+	}
+	
+	public void sendResponseGame(int[] response) {
+		this.clientGame.sendResponse(response);
+	}
+	
+	public void receivedMessageChat(String message) {
+		this.gameFrame.setMessageToTextAreaChat(message);
+	}
+
+	public void receivedSequenceGame(int[] colorResponse) {
+		this.gameFrame.setSequenceToGameView(colorResponse);
+	}
+
+	public void receiveidResponseGame(int[] colorResponse) {
+		this.gameFrame.setResponseToGameView(colorResponse);
 	}
 	
 	public void setNickName(String nickName) {
@@ -53,7 +68,7 @@ public class ClientController {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void disconnectFromGame() {
 		try {
 			this.clientGame.getReader().close();
@@ -64,9 +79,5 @@ public class ClientController {
 		}
 	}
 
-	public void sendSequenceToViewGame(int[] colorResponse) {
-		for (int i = 0; i < colorResponse.length; i++) {
-			this.gameFrame.getArrayLabels()[this.gameFrame.getIndex_row()][i].setIcon(Sprite.getColor(colorResponse[i]));
-		}
-	}
+
 }

@@ -60,7 +60,7 @@ public class ClientChat implements Runnable {
 		String messageFromServer;
 		try {
 			while (this.socket.isConnected() && ((messageFromServer = reader.readUTF()) != null)) {
-				this.controller.sendMessageToViewChat(messageFromServer);
+				this.controller.receivedMessageChat(messageFromServer);
 			}
 		} catch (IOException e) {
 			disconnect();

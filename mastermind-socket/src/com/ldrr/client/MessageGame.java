@@ -11,8 +11,8 @@ import java.io.Serializable;
  */
 public class MessageGame implements Serializable {
 
-	private int[] colorSequence = new int[4];
-	private int[] colorResponse = new int[4];
+	private int[] colorSequence = null;
+	private int[] colorResponse = null;
 	
 	/**
 	 * @return the colorSequence

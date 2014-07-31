@@ -34,14 +34,14 @@ public class ServerChat {
 				Socket client = this.server.accept();
 				listClient.add(client);
 				System.out.println("Server on e com " + this.listClient.size() + " usuarios.");
-				new Thread(new ThreadServer(client, this)).start();
+				new Thread(new ThreadServerChat(client, this)).start();
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void sendMessage(String fromClient, ThreadServer thread) {
+	public void sendMessage(String fromClient, ThreadServerChat thread) {
 		DataOutputStream writer = null;
 		for (Socket othreClient : listClient) {
 			try {

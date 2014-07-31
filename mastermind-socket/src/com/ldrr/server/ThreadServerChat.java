@@ -11,13 +11,13 @@ import java.net.Socket;
  * @author Lucas Diego
  *
  */
-public class ThreadServer implements Runnable {
+public class ThreadServerChat implements Runnable {
 
 	private Socket client;
 	private DataInputStream reader;
 	private ServerChat server;
 
-	public ThreadServer(Socket client, ServerChat server) {
+	public ThreadServerChat(Socket client, ServerChat server) {
 		this.client = client;
 		this.server = server;
 		try {
