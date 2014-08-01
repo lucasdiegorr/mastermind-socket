@@ -1,4 +1,5 @@
 package com.ldrr.client;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.net.UnknownHostException;
 
 /**
  * @author Lucas Diego
- *
+ * 
  */
 public class ClientChat implements Runnable {
 
@@ -21,7 +22,7 @@ public class ClientChat implements Runnable {
 	private String clientName;
 	private ClientController controller;
 
-	//CONSTRUCTORS
+	// CONSTRUCTORS
 	public ClientChat(ClientController controller) {
 		connect("127.0.0.1", 5000);
 		this.controller = controller;
@@ -34,7 +35,8 @@ public class ClientChat implements Runnable {
 		this.clientName = "Anônimo";
 	}
 
-	public ClientChat(String address, int port, String clientName, ClientController controller) {
+	public ClientChat(String address, int port, String clientName,
+			ClientController controller) {
 		connect(address, port);
 		this.controller = controller;
 		this.clientName = clientName;
@@ -52,14 +54,17 @@ public class ClientChat implements Runnable {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Runnable#run()
 	 */
 	@Override
 	public void run() {
 		String messageFromServer;
 		try {
-			while (this.socket.isConnected() && ((messageFromServer = reader.readUTF()) != null)) {
+			while (this.socket.isConnected()
+					&& ((messageFromServer = reader.readUTF()) != null)) {
 				this.controller.receivedMessageChat(messageFromServer);
 			}
 		} catch (IOException e) {
@@ -70,7 +75,7 @@ public class ClientChat implements Runnable {
 
 	public void sendMessage(String string) {
 		try {
-			this.writer.writeUTF(clientName +": " + string);
+			this.writer.writeUTF(clientName + ": " + string);
 			this.writer.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -91,7 +96,7 @@ public class ClientChat implements Runnable {
 	public Socket getSocket() {
 		return socket;
 	}
-	
+
 	public DataInputStream getReader() {
 		return reader;
 	}

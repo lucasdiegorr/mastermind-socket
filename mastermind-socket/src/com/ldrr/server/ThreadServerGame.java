@@ -9,7 +9,7 @@ import java.net.Socket;
 
 /**
  * @author Lucas Diego
- *
+ * 
  */
 public class ThreadServerGame implements Runnable {
 
@@ -31,14 +31,17 @@ public class ThreadServerGame implements Runnable {
 		return client;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Runnable#run()
 	 */
 	@Override
 	public void run() {
 		String fromClient = null;
 		try {
-			while (!this.client.isClosed() && ((fromClient = reader.readUTF()) != null)) {
+			while (!this.client.isClosed()
+					&& ((fromClient = reader.readUTF()) != null)) {
 				System.out.println(fromClient);
 				this.server.sendMessage(fromClient, this);
 			}

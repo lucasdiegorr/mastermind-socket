@@ -14,9 +14,9 @@ import java.util.List;
 
 /**
  * @author Lucas Diego
- *
+ * 
  */
-public class ServerGame implements Runnable{
+public class ServerGame implements Runnable {
 
 	private ServerSocket server;
 	private List<Socket> listClient = new ArrayList<Socket>();
@@ -66,7 +66,7 @@ public class ServerGame implements Runnable{
 
 	@Override
 	public void run() {
-		while(true){
+		while (true) {
 			Socket client;
 			try {
 				client = this.server.accept();
@@ -95,10 +95,14 @@ public class ServerGame implements Runnable{
 	public String getAddress() {
 		String address = null;
 		try {
-			address =  ""+Inet4Address.getLocalHost().getHostAddress() + " : " + this.server.getLocalPort();
+			address = "" + Inet4Address.getLocalHost().getHostAddress();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
 		return address;
+	}
+	
+	public int getPort() {
+		return this.server.getLocalPort();
 	}
 }

@@ -1,4 +1,5 @@
 package com.ldrr.server;
+
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Inet4Address;
@@ -14,9 +15,9 @@ import java.util.List;
 
 /**
  * @author Lucas Diego
- *
+ * 
  */
-public class ServerChat implements Runnable{
+public class ServerChat implements Runnable {
 
 	private ServerSocket server;
 	private List<Socket> listClient = new ArrayList<Socket>();
@@ -66,12 +67,13 @@ public class ServerChat implements Runnable{
 
 	@Override
 	public void run() {
-		while(true){
+		while (true) {
 			Socket client;
 			try {
 				client = this.server.accept();
 				listClient.add(client);
-				System.out.println("Server on e com " + this.listClient.size() + " usuarios.");
+				System.out.println("Server on e com " + this.listClient.size()
+						+ " usuarios.");
 				new Thread(new ThreadServerChat(client, this)).start();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -82,10 +84,14 @@ public class ServerChat implements Runnable{
 	public String getAddress() {
 		String address = null;
 		try {
-			address =  ""+Inet4Address.getLocalHost().getHostAddress() + " : " + this.server.getLocalPort();
+			address = "" + Inet4Address.getLocalHost().getHostAddress();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
 		return address;
+	}
+	
+	public int getPort() {
+		return this.server.getLocalPort();
 	}
 }

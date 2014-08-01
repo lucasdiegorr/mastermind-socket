@@ -1,4 +1,5 @@
 package com.ldrr.client;
+
 import java.io.IOException;
 
 import com.ldrr.graphic.GameFrame;
@@ -9,7 +10,7 @@ import com.ldrr.graphic.GameFrame;
 
 /**
  * @author Lucas Diego
- *
+ * 
  */
 public class ClientController {
 
@@ -30,9 +31,9 @@ public class ClientController {
 		this.clientGame = new ClientGame(this);
 		new Thread(clientGame).start();
 	}
-	
+
 	public void initGame(String address, int port) {
-		this.clientGame = new ClientGame(address,port,this);
+		this.clientGame = new ClientGame(address, port, this);
 		new Thread(clientGame).start();
 	}
 
@@ -43,7 +44,7 @@ public class ClientController {
 	public void sendSequenceColors(int[] sequence) {
 		this.clientGame.sendSequence(sequence);
 	}
-	
+
 	public void receivedMessageChat(String message) {
 		this.gameFrame.setMessageToTextAreaChat(message);
 	}
@@ -51,7 +52,7 @@ public class ClientController {
 	public void receivedSequenceGame(int[] colorResponse) {
 		this.gameFrame.setSequenceToGameView(colorResponse);
 	}
-	
+
 	public void setNickName(String nickName) {
 		this.clientChat.setClientName(nickName);
 	}
@@ -83,10 +84,9 @@ public class ClientController {
 	public void sendAlert(boolean b) {
 		if (b) {
 			this.clientGame.sendMessage("DISCONNECTED");
-		}else {
+		} else {
 			this.clientGame.sendMessage("RESETGAME");
 		}
 	}
-
 
 }

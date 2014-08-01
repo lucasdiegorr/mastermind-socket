@@ -1,4 +1,5 @@
 package com.ldrr.server;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
@@ -9,7 +10,7 @@ import java.net.Socket;
 
 /**
  * @author Lucas Diego
- *
+ * 
  */
 public class ThreadServerChat implements Runnable {
 
@@ -31,14 +32,17 @@ public class ThreadServerChat implements Runnable {
 		return client;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Runnable#run()
 	 */
 	@Override
 	public void run() {
 		String fromClient = null;
 		try {
-			while (!this.client.isClosed() && ((fromClient = reader.readUTF()) != null)) {
+			while (!this.client.isClosed()
+					&& ((fromClient = reader.readUTF()) != null)) {
 				this.server.sendMessage(fromClient, this);
 			}
 		} catch (IOException e) {

@@ -1,4 +1,5 @@
 package com.ldrr.client;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -11,7 +12,7 @@ import java.net.UnknownHostException;
 
 /**
  * @author Lucas Diego
- *
+ * 
  */
 public class ClientGame implements Runnable {
 
@@ -20,7 +21,7 @@ public class ClientGame implements Runnable {
 	private DataInputStream reader;
 	private ClientController controller;
 
-	//CONSTRUCTORS
+	// CONSTRUCTORS
 	public ClientGame(ClientController controller) {
 		connect("127.0.0.1", 6000);
 		this.controller = controller;
@@ -30,7 +31,6 @@ public class ClientGame implements Runnable {
 		connect(address, port);
 		this.controller = controller;
 	}
-
 
 	private void connect(String address, int port) {
 		try {
@@ -44,16 +44,19 @@ public class ClientGame implements Runnable {
 		}
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Runnable#run()
 	 */
 	@Override
 	public void run() {
 		String messageFromServer;
 		try {
-			while (this.socket.isConnected() && ((messageFromServer = reader.readUTF()) != null)) {
+			while (this.socket.isConnected()
+					&& ((messageFromServer = reader.readUTF()) != null)) {
 				if (isAlert(messageFromServer)) {
-				}else{
+				} else {
 					int[] sequence = convertToIntArray(messageFromServer);
 					this.controller.receivedSequenceGame(sequence);
 				}
@@ -69,7 +72,7 @@ public class ClientGame implements Runnable {
 		if (messageFromServer.equals("DISCONNECTED")) {
 			this.controller.Alert(true);
 			return true;
-		}else if (messageFromServer.equals("RESETGAME")) {
+		} else if (messageFromServer.equals("RESETGAME")) {
 			this.controller.Alert(false);
 			return true;
 		}
