@@ -30,6 +30,11 @@ public class ClientController {
 		this.clientGame = new ClientGame(this);
 		new Thread(clientGame).start();
 	}
+	
+	public void initGame(String address, int port) {
+		this.clientGame = new ClientGame(address,port,this);
+		new Thread(clientGame).start();
+	}
 
 	public void sendMessageChat(String message) {
 		this.clientChat.sendMessage(message);

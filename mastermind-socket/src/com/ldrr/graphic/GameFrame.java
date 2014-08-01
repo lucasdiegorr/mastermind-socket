@@ -59,11 +59,21 @@ public class GameFrame {
 	 */
 	public GameFrame(boolean challenging) {
 		initialize();
+		initGame(challenging);
+	}
+
+	private void initGame(boolean challenging) {
 		this.challenging = challenging;
 		this.myTurn = !challenging;
 		this.frmMastermindGame.setVisible(true);
-		clientController = new ClientController(GameFrame.this);
-		clientController.initGame();
+		this.clientController = new ClientController(GameFrame.this);
+		if (challenging) {
+			String address = JOptionPane.showInputDialog("Insira o endereço de quem deseja desafiar.");
+			int port = Integer.parseInt(JOptionPane.showInputDialog("Em qual sala ele está?"));
+			this.clientController.initGame(address,port);
+		}else{
+			this.clientController.initGame();
+		}
 	}
 
 	/**
@@ -1017,7 +1027,7 @@ public class GameFrame {
 		this.lblPassword2.setIcon(Sprite.getColor(7));
 		this.lblPassword3.setIcon(Sprite.getColor(7));
 		this.lblPassword4.setIcon(Sprite.getColor(7));
-		
+
 		this.index_row = 0;
 		myTurnGame(true);
 	}
