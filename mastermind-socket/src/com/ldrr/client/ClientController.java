@@ -39,20 +39,12 @@ public class ClientController {
 		this.clientGame.sendSequence(sequence);
 	}
 	
-	public void sendResponseGame(int[] response) {
-		this.clientGame.sendResponse(response);
-	}
-	
 	public void receivedMessageChat(String message) {
 		this.gameFrame.setMessageToTextAreaChat(message);
 	}
 
 	public void receivedSequenceGame(int[] colorResponse) {
 		this.gameFrame.setSequenceToGameView(colorResponse);
-	}
-
-	public void receiveidResponseGame(int[] colorResponse) {
-		this.gameFrame.setResponseToGameView(colorResponse);
 	}
 	
 	public void setNickName(String nickName) {
@@ -76,6 +68,18 @@ public class ClientController {
 			this.clientGame.getSocket().close();
 		} catch (IOException e) {
 			e.printStackTrace();
+		}
+	}
+
+	public void Alert(boolean b) {
+		this.gameFrame.Alert(b);
+	}
+
+	public void sendAlert(boolean b) {
+		if (b) {
+			this.clientGame.sendMessage("DISCONNECTED");
+		}else {
+			this.clientGame.sendMessage("RESETGAME");
 		}
 	}
 

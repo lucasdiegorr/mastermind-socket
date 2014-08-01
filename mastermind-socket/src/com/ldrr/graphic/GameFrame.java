@@ -1,10 +1,9 @@
 package com.ldrr.graphic;
-import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JPanel;
-import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.TitledBorder;
 import javax.swing.JButton;
 import javax.swing.JTextField;
@@ -19,6 +18,7 @@ import javax.swing.JLabel;
 
 
 
+
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -27,13 +27,14 @@ import javax.swing.UIManager;
 
 public class GameFrame {
 
-	private static ClientController clientController;
+	private ClientController clientController;
 	private JFrame frmMastermindGame;
 	private JTextArea textAreaChat;
 	private JTextField textToSend;
 	private JTextField textFieldNickName;
 	private boolean challenging;
 	private boolean myTurn;
+	private boolean firstMoviment = true;
 	private JButton btnConnect;
 	private JButton btnDisconnect;
 	private JButton btnSend;
@@ -47,30 +48,11 @@ public class GameFrame {
 	private int[] sequenceToSend = {-1,-1,-1,-1};
 	private int index_collum = 0;
 	private int index_row = 0;
-
-	/**
-	 * Launch the application.
-	 */
-		public static void main(String[] args) {
-			try {
-				UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager.getLookAndFeelClassName());
-			} catch (ClassNotFoundException | InstantiationException
-					| IllegalAccessException | UnsupportedLookAndFeelException e1) {
-				e1.printStackTrace();
-			}
-			EventQueue.invokeLater(new Runnable() {
-				public void run() {
-					try {
-						GameFrame window = new GameFrame(false);
-						window.frmMastermindGame.setVisible(true);
-						clientController.initGame();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			});
-	
-		}
+	private JLabel lblPassword1;
+	private JLabel lblPassword2;
+	private JLabel lblPassword3;
+	private JLabel lblPassword4;
+	private int[] password;
 
 	/**
 	 * Create the application.
@@ -81,6 +63,7 @@ public class GameFrame {
 		this.myTurn = !challenging;
 		this.frmMastermindGame.setVisible(true);
 		clientController = new ClientController(GameFrame.this);
+		clientController.initGame();
 	}
 
 	/**
@@ -111,7 +94,12 @@ public class GameFrame {
 		move_1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				if (myTurn) {
+				if (!challenging && firstMoviment) {
+					if (sequenceToSend[0] == 5) {
+						sequenceToSend[0] = -1;
+					}
+					move_1.setIcon(Sprite.getColor(++sequenceToSend[0]));
+				}else if (myTurn) {
 					if (challenging) {
 						if (sequenceToSend[0] == 5) {
 							sequenceToSend[0] = -1;
@@ -135,7 +123,12 @@ public class GameFrame {
 		move_2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (myTurn) {
+				if (!challenging && firstMoviment) {
+					if (sequenceToSend[1] == 5) {
+						sequenceToSend[1] = -1;
+					}
+					move_2.setIcon(Sprite.getColor(++sequenceToSend[1]));
+				}else if (myTurn) {
 					if (challenging) {
 						if (sequenceToSend[1] == 5) {
 							sequenceToSend[1] = -1;
@@ -158,7 +151,12 @@ public class GameFrame {
 		move_3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (myTurn) {
+				if (!challenging && firstMoviment) {
+					if (sequenceToSend[2] == 5) {
+						sequenceToSend[2] = -1;
+					}
+					move_3.setIcon(Sprite.getColor(++sequenceToSend[2]));
+				}else if (myTurn) {
 					if (challenging) {
 						if (sequenceToSend[2] == 5) {
 							sequenceToSend[2] = -1;
@@ -181,7 +179,12 @@ public class GameFrame {
 		move_4.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (myTurn) {
+				if (!challenging && firstMoviment) {
+					if (sequenceToSend[3] == 5) {
+						sequenceToSend[3] = -1;
+					}
+					move_4.setIcon(Sprite.getColor(++sequenceToSend[3]));
+				}else if (myTurn) {
 					if (challenging) {
 						if (sequenceToSend[3] == 5) {
 							sequenceToSend[3] = -1;
@@ -201,20 +204,24 @@ public class GameFrame {
 		btnSendSequence = new JButton();
 		btnSendSequence.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				if (challenging) {
-					for (int i = 0; i < sequenceToSend.length; i++) {
-						getArrayLabels()[getIndex_row()][i].setIcon(Sprite.getColor(sequenceToSend[i]));
+				if (myTurn) {
+					if (!challenging && firstMoviment) {
+						setPassword(sequenceToSend);
+						index_row--;
+					}else if (challenging) {
+						for (int i = 0; i < sequenceToSend.length; i++) {
+							getArrayLabels()[getIndex_row()][i].setIcon(Sprite.getColor(sequenceToSend[i]));
+						}
+					}else {
+						for (int i = 0; i < sequenceToSend.length; i++) {
+							arrayLabelsResponse[getIndex_row()][i].setIcon(Sprite.getEvalueColors(sequenceToSend[i]));
+						}
 					}
-					//clientController.sendSequenceColors(sequenceToSend);
-				}else {
-					for (int i = 0; i < sequenceToSend.length; i++) {
-						arrayLabelsResponse[getIndex_row()][i].setIcon(Sprite.getColor(sequenceToSend[i]));
-					}
-					//clientController.sendResponseGame(sequenceToSend);
+					clientController.sendSequenceColors(sequenceToSend);
+					myTurnGame(false);
+					index_row++;
+					resetMoviment();
 				}
-				myTurnGame(false);
-				index_row++;
-				resetMoviment();
 			}
 
 		});
@@ -854,26 +861,35 @@ public class GameFrame {
 		frmMastermindGame.getContentPane().add(panelPassword);
 		panelPassword.setLayout(null);
 
-		JLabel lblNewLabel = new JLabel();
-		lblNewLabel.setBounds(22, 22, 54, 52);
-		lblNewLabel.setIcon(Sprite.getColor(7));
-		panelPassword.add(lblNewLabel);
+		lblPassword1 = new JLabel();
+		lblPassword1.setBounds(22, 22, 54, 52);
+		lblPassword1.setIcon(Sprite.getColor(7));
+		panelPassword.add(lblPassword1);
 
-		JLabel lblNewLabel_1 = new JLabel();
-		lblNewLabel_1.setBounds(98, 22, 54, 52);
-		lblNewLabel_1.setIcon(Sprite.getColor(7));
-		panelPassword.add(lblNewLabel_1);
+		lblPassword2 = new JLabel();
+		lblPassword2.setBounds(98, 22, 54, 52);
+		lblPassword2.setIcon(Sprite.getColor(7));
+		panelPassword.add(lblPassword2);
 
-		JLabel lblNewLabel_2 = new JLabel();
-		lblNewLabel_2.setBounds(174, 22, 54, 52);
-		lblNewLabel_2.setIcon(Sprite.getColor(7));
-		panelPassword.add(lblNewLabel_2);
+		lblPassword3 = new JLabel();
+		lblPassword3.setBounds(174, 22, 54, 52);
+		lblPassword3.setIcon(Sprite.getColor(7));
+		panelPassword.add(lblPassword3);
 
-		JLabel lblNewLabel_3 = new JLabel();
-		lblNewLabel_3.setBounds(250, 22, 54, 52);
-		lblNewLabel_3.setIcon(Sprite.getColor(7));
-		panelPassword.add(lblNewLabel_3);
+		lblPassword4 = new JLabel();
+		lblPassword4.setBounds(250, 22, 54, 52);
+		lblPassword4.setIcon(Sprite.getColor(7));
+		panelPassword.add(lblPassword4);
 
+	}
+
+	private void setPassword(int[] sequenceToSend) {
+		password = sequenceToSend;
+		lblPassword1.setIcon(Sprite.getColor(sequenceToSend[0]));
+		lblPassword2.setIcon(Sprite.getColor(sequenceToSend[1]));
+		lblPassword3.setIcon(Sprite.getColor(sequenceToSend[2]));
+		lblPassword4.setIcon(Sprite.getColor(sequenceToSend[3]));
+		this.firstMoviment = false;
 	}
 
 	private void populeArrayChance(JLabel label, int i, int j) {
@@ -917,14 +933,45 @@ public class GameFrame {
 	}
 
 	public void setSequenceToGameView(int[] colorResponse) {
-		for (int i = 0; i < colorResponse.length; i++) {
-			getArrayLabels()[getIndex_row()][i].setIcon(Sprite.getColor(colorResponse[i]));
+		if (firstMoviment) {
+			password = colorResponse;
+			firstMoviment = false;
+		}else {
+			if (challenging) {
+				for (int i = 0; i < colorResponse.length; i++) {
+					getArrayLabelsResponse()[getIndex_row()-1][i].setIcon(Sprite.getEvalueColors(colorResponse[i]));
+				}
+				verifyWinner(colorResponse);
+			}else{
+				for (int i = 0; i < colorResponse.length; i++) {
+					getArrayLabels()[getIndex_row()][i].setIcon(Sprite.getColor(colorResponse[i]));
+				}
+			}
 		}
+		JOptionPane.showMessageDialog(null, "Sua Vez.");
+		myTurnGame(true);
 	}
 
-	public void setResponseToGameView(int[] colorResponse) {
-		for (int i = 0; i < colorResponse.length; i++) {
-			getArrayLabelsResponse()[getIndex_row()][i].setIcon(Sprite.getEvalueColors(colorResponse[i]));
+	private void verifyWinner(int[] colorResponse) {
+		if ((colorResponse[0] == 0) && (colorResponse[1] == 0) && (colorResponse[2] == 0) && (colorResponse[3] == 0)) {
+			JOptionPane.showMessageDialog(null, "Parabéns você ganhou!!!");
+			setPassword(password);
+			if (JOptionPane.showConfirmDialog(null, "Gostaria de jogar de novo?") == JOptionPane.OK_OPTION) {
+				resetGame();
+				this.clientController.sendAlert(false);
+			}else{
+				JOptionPane.showMessageDialog(null, "Muito bem e até a próxima.");
+				System.exit(0);
+			}
+		}else if (this.index_row == 10) {
+			JOptionPane.showMessageDialog(null, "Você perdeu.");
+			if (JOptionPane.showConfirmDialog(null, "Gostaria de jogar de novo?") == JOptionPane.OK_OPTION) {
+				resetGame();
+				this.clientController.sendAlert(false);
+			}else{
+				JOptionPane.showMessageDialog(null, "Quem sabe da próxima vez.\nAté mais.");
+				System.exit(0);
+			}
 		}
 	}
 
@@ -957,4 +1004,30 @@ public class GameFrame {
 		myTurn = turn;
 	}
 
+	private void resetGame() {
+		for (int i = 0; i < 10; i++) {
+			for (int j = 0; j < 4; j++) {
+				arrayLabelsSequence[i][j].setIcon(null);
+				arrayLabelsResponse[i][j].setIcon(null);
+			}
+		}
+		this.firstMoviment = true;
+		this.password = null;
+		this.lblPassword1.setIcon(Sprite.getColor(7));
+		this.lblPassword2.setIcon(Sprite.getColor(7));
+		this.lblPassword3.setIcon(Sprite.getColor(7));
+		this.lblPassword4.setIcon(Sprite.getColor(7));
+		
+		this.index_row = 0;
+		myTurnGame(true);
+	}
+
+	public void Alert(boolean b) {
+		if (b) {
+			JOptionPane.showMessageDialog(null, "O outro jogador desconectou e como não dá pra jogar só...\nO jogo vai encerrar.\nAté a próxima.");
+			System.exit(0);
+		}else{
+			resetGame();
+		}
+	}
 }

@@ -1,24 +1,23 @@
-/**
- * 
- */
 package com.ldrr.client;
-
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
 /**
- * @author Lucas-Diego
+ * 
+ */
+
+/**
+ * @author Lucas Diego
  *
  */
-public class ClientGame implements Runnable{
+public class ClientGame implements Runnable {
 
 	private Socket socket;
-	private ObjectInputStream reader;
-	private ObjectOutputStream writer;
-	private MessageGame message;
+	private DataOutputStream writer;
+	private DataInputStream reader;
 	private ClientController controller;
 
 	//CONSTRUCTORS
@@ -27,59 +26,70 @@ public class ClientGame implements Runnable{
 		this.controller = controller;
 	}
 
+	public ClientGame(String address, int port, ClientController controller) {
+		connect(address, port);
+		this.controller = controller;
+	}
+
+
 	private void connect(String address, int port) {
 		try {
 			this.socket = new Socket(address, port);
-			this.writer = new ObjectOutputStream(socket.getOutputStream());
-			this.reader = new ObjectInputStream(socket.getInputStream());
+			this.writer = new DataOutputStream(socket.getOutputStream());
+			this.reader = new DataInputStream(socket.getInputStream());
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
+
+	/* (non-Javadoc)
+	 * @see java.lang.Runnable#run()
+	 */
 	@Override
 	public void run() {
-		MessageGame messageFromServer = null;
+		String messageFromServer;
 		try {
-			while (this.socket.isConnected() && ((messageFromServer = (MessageGame) reader.readObject()) != null)) {
-				if (messageFromServer.getColorSequence() == null) {
-					this.controller.receiveidResponseGame(messageFromServer.getColorResponse());
-				}else {
-					this.controller.receivedSequenceGame(messageFromServer.getColorSequence());
+			while (this.socket.isConnected() && ((messageFromServer = reader.readUTF()) != null)) {
+				if (isAlert(messageFromServer)) {
+				}else{
+					int[] sequence = convertToIntArray(messageFromServer);
+					this.controller.receivedSequenceGame(sequence);
 				}
 			}
-		} catch (Exception e) {
-			disconnect();
-			e.printStackTrace();
-		}
-	}
-	
-	public void sendSequence(int[] sequence) {
-		MessageGame message = new MessageGame();
-		message.setColorSequence(sequence);
-		try {
-			this.writer.writeObject(message);
-			this.writer.flush();
 		} catch (IOException e) {
+			disconnect();
+			this.controller.Alert(true);
 			e.printStackTrace();
 		}
 	}
-	
-	public void sendResponse(int[] sequence) {
-		MessageGame message = new MessageGame();
-		message.setColorResponse(sequence);
+
+	private boolean isAlert(String messageFromServer) {
+		if (messageFromServer.equals("DISCONNECTED")) {
+			this.controller.Alert(true);
+			return true;
+		}else if (messageFromServer.equals("RESETGAME")) {
+			this.controller.Alert(false);
+			return true;
+		}
+		return false;
+	}
+
+	public void sendSequence(int[] sequence) {
+		String sequensceString = convertToString(sequence);
+		sendMessage(sequensceString);
+	}
+
+	public void sendMessage(String string) {
 		try {
-			this.writer.writeObject(message);
+			this.writer.writeUTF(string);
 			this.writer.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	
 	private void disconnect() {
 		try {
 			this.reader.close();
@@ -90,64 +100,37 @@ public class ClientGame implements Runnable{
 			e.printStackTrace();
 		}
 	}
-	
-	/**
-	 * @return the socket
-	 */
+
+	private String convertToString(int[] sequence) {
+		String toConvert = "";
+		for (int i = 0; i < sequence.length; i++) {
+			toConvert += sequence[i];
+		}
+		return toConvert;
+	}
+
+	private int[] convertToIntArray(String messageFromServer) {
+
+		char[] arrayCh = messageFromServer.toCharArray();
+		int[] arrayInt = new int[arrayCh.length];
+
+		for (int i = 0; i < arrayCh.length; i++) {
+			arrayInt[i] = Integer.parseInt(String.valueOf(arrayCh[i]));
+		}
+
+		return arrayInt;
+	}
+
 	public Socket getSocket() {
 		return socket;
 	}
 
-	/**
-	 * @param socket the socket to set
-	 */
-	public void setSocket(Socket socket) {
-		this.socket = socket;
-	}
-
-	/**
-	 * @return the reader
-	 */
-	public ObjectInputStream getReader() {
+	public DataInputStream getReader() {
 		return reader;
 	}
 
-	/**
-	 * @param reader the reader to set
-	 */
-	public void setReader(ObjectInputStream reader) {
-		this.reader = reader;
-	}
-
-	/**
-	 * @return the writer
-	 */
-	public ObjectOutputStream getWriter() {
+	public DataOutputStream getWriter() {
 		return writer;
 	}
-
-	/**
-	 * @param writer the writer to set
-	 */
-	public void setWriter(ObjectOutputStream writer) {
-		this.writer = writer;
-	}
-
-	/**
-	 * @return the message
-	 */
-	public MessageGame getMessage() {
-		return message;
-	}
-
-	/**
-	 * @param message the message to set
-	 */
-	public void setMessage(MessageGame message) {
-		this.message = message;
-	}
-
-	
-
 
 }

@@ -3,27 +3,25 @@
  */
 package com.ldrr.server;
 
+import java.io.DataInputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.net.Socket;
 
-import com.ldrr.client.MessageGame;
-
 /**
- * @author Lucas
+ * @author Lucas Diego
  *
  */
 public class ThreadServerGame implements Runnable {
 
 	private Socket client;
-	private ObjectInputStream reader;
+	private DataInputStream reader;
 	private ServerGame server;
 
 	public ThreadServerGame(Socket client, ServerGame server) {
 		this.client = client;
 		this.server = server;
 		try {
-			this.reader = new ObjectInputStream(this.client.getInputStream());
+			this.reader = new DataInputStream(this.client.getInputStream());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -38,13 +36,15 @@ public class ThreadServerGame implements Runnable {
 	 */
 	@Override
 	public void run() {
-		MessageGame fromClient = null;
+		String fromClient = null;
 		try {
-			while (!this.client.isClosed() && ((fromClient = (MessageGame) reader.readObject()) != null)) {
+			while (!this.client.isClosed() && ((fromClient = reader.readUTF()) != null)) {
+				System.out.println(fromClient);
 				this.server.sendMessage(fromClient, this);
 			}
 		} catch (Exception e) {
 			this.server.disconnect(this.client);
+			this.server.sendAlert();
 			e.printStackTrace();
 		}
 	}

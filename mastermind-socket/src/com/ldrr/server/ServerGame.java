@@ -3,20 +3,20 @@
  */
 package com.ldrr.server;
 
+import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
+import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.ldrr.client.MessageGame;
 
 /**
  * @author Lucas Diego
  *
  */
-public class ServerGame {
+public class ServerGame implements Runnable{
 
 	private ServerSocket server;
 	private List<Socket> listClient = new ArrayList<Socket>();
@@ -32,25 +32,19 @@ public class ServerGame {
 	private void requestConnect(int port) {
 		try {
 			this.server = new ServerSocket(port);
-			System.out.println("Server de Game on.");
-			while(true){
-				Socket client = this.server.accept();
-				listClient.add(client);
-				System.out.println("Server on e com " + this.listClient.size() + " usuarios.");
-				new Thread(new ThreadServerGame(client, this)).start();
-			}
 		} catch (IOException e) {
+			requestConnect(port++);
 			e.printStackTrace();
 		}
 	}
 
-	public void sendMessage(MessageGame fromClient, ThreadServerGame thread) {
-		ObjectOutputStream writer = null;
+	public void sendMessage(String fromClient, ThreadServerGame thread) {
+		DataOutputStream writer = null;
 		for (Socket othreClient : listClient) {
 			try {
 				if (!othreClient.equals(thread.getClient())) {
-					writer = new ObjectOutputStream(othreClient.getOutputStream());
-					writer.writeObject(fromClient);
+					writer = new DataOutputStream(othreClient.getOutputStream());
+					writer.writeUTF(fromClient);
 					writer.flush();
 				}
 			} catch (IOException e) {
@@ -59,7 +53,7 @@ public class ServerGame {
 			}
 		}
 	}
-	
+
 	public void disconnect(Socket client) {
 
 		listClient.remove(client);
@@ -70,10 +64,41 @@ public class ServerGame {
 		}
 	}
 
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		new ServerGame();
+	@Override
+	public void run() {
+		while(true){
+			Socket client;
+			try {
+				client = this.server.accept();
+				listClient.add(client);
+				new Thread(new ThreadServerGame(client, this)).start();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void sendAlert() {
+		DataOutputStream writer = null;
+		for (Socket clients : listClient) {
+			try {
+				writer = new DataOutputStream(clients.getOutputStream());
+				writer.writeUTF("DISCONNECTED");
+				writer.flush();
+			} catch (IOException e) {
+				System.out.println("Erro ao enviar mensagem.");
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public String getAddress() {
+		String address = null;
+		try {
+			address =  ""+Inet4Address.getLocalHost().getHostAddress() + " : " + this.server.getLocalPort();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		return address;
 	}
 }
