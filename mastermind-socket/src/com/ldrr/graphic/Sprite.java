@@ -3,6 +3,10 @@
  */
 package com.ldrr.graphic;
 
+import java.util.ArrayList;
+
+import javax.swing.ImageIcon;
+
 
 /**
  * @author Lucas Diego
@@ -15,6 +19,8 @@ public class Sprite {
 	private final static String[] evalueColors = { "/black.png","/white.png", "/blanck_ball.png" };
 	private final static String[] responseColors = {"/Eval_Black.png", "/Eval_White.png", "/Eval_Blank.png"};
 
+	private ArrayList<ImageIcon> arrayColors = new ArrayList<ImageIcon>();
+	
 	public static String getColor(int index) {
 		return colors[index];
 	}
@@ -29,5 +35,9 @@ public class Sprite {
 	
 	public static String getResponseColors(int index) {
 		return responseColors[index];
+	}
+	
+	public ArrayList<ImageIcon> getArrayColors() {
+		return arrayColors;
 	}
 }
