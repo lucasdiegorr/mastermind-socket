@@ -16,6 +16,8 @@ import com.ldrr.client.ClientController;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Frame;
 
 import javax.swing.JLabel;
 
@@ -25,20 +27,24 @@ import java.awt.event.MouseEvent;
 import javax.swing.UIManager;
 
 import java.awt.event.MouseMotionAdapter;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.util.Arrays;
+import java.awt.GridLayout;
+import java.awt.Font;
 
 public class GameFrame {
 
 	private ClientController clientController;
+	private Sprite sprite;
 	private JFrame frmMastermindGame;
 	private JTextArea textAreaChat;
 	private JTextField textToSend;
-	private JTextField textFieldNickName;
 	private boolean challenging;
 	private boolean myTurn;
 	private boolean firstMoviment = true;
 	private JButton btnConnect;
 	private JButton btnDisconnect;
-	private JButton btnSend;
 	private JLabel move_1;
 	private JLabel move_2;
 	private JLabel move_3;
@@ -59,6 +65,7 @@ public class GameFrame {
 	 * Create the application.
 	 */
 	public GameFrame(boolean challenging) {
+		this.sprite = new Sprite();
 		initialize();
 		initGame(challenging);
 	}
@@ -86,7 +93,7 @@ public class GameFrame {
 		frmMastermindGame = new JFrame();
 		frmMastermindGame.setResizable(false);
 		frmMastermindGame.setTitle("MasterMind Game");
-		frmMastermindGame.setBounds(100, 100, 630, 710);
+		frmMastermindGame.setBounds(100, 100, 524, 710);
 		frmMastermindGame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmMastermindGame.getContentPane().setLayout(null);
 
@@ -97,166 +104,11 @@ public class GameFrame {
 		frmMastermindGame.getContentPane().add(panelGame);
 		panelGame.setLayout(null);
 
-		JPanel panelMove = new JPanel();
-		panelMove.setBorder(new TitledBorder(UIManager
-				.getBorder("TitledBorder.border"), "Sua Jogada",
-				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelMove.setBounds(16, 593, 160, 60);
-		panelGame.add(panelMove);
-
-		move_1 = new JLabel();
-		move_1.setBounds(4, 20, 35, 35);
-		move_1.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(6))));
-		move_1.setTransferHandler(new TransferHandler("icon"));
-		move_1.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				if (!challenging && firstMoviment) {
-					if (sequenceToSend[0] == 5) {
-						sequenceToSend[0] = -1;
-					}
-					move_1.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(++sequenceToSend[0]))));
-				} else if (myTurn) {
-					if (challenging) {
-						if (sequenceToSend[0] == 5) {
-							sequenceToSend[0] = -1;
-						}
-						move_1.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(++sequenceToSend[0]))));
-					} else {
-						if (sequenceToSend[0] == 2) {
-							sequenceToSend[0] = -1;
-						}
-						move_1.setIcon(new ImageIcon(getClass().getResource(Sprite
-								.getEvalueColors(++sequenceToSend[0]))));
-					}
-				}
-			}
-		});
-		panelMove.setLayout(null);
-		panelMove.add(move_1);
-
-		move_2 = new JLabel();
-		move_2.setBounds(43, 20, 35, 35);
-		move_2.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(6))));
-		move_2.setTransferHandler(new TransferHandler("icon"));
-		move_2.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (!challenging && firstMoviment) {
-					if (sequenceToSend[1] == 5) {
-						sequenceToSend[1] = -1;
-					}
-					move_2.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(++sequenceToSend[1]))));
-				} else if (myTurn) {
-					if (challenging) {
-						if (sequenceToSend[1] == 5) {
-							sequenceToSend[1] = -1;
-						}
-						move_2.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(++sequenceToSend[1]))));
-					} else {
-						if (sequenceToSend[1] == 2) {
-							sequenceToSend[1] = -1;
-						}
-						move_2.setIcon(new ImageIcon(getClass().getResource(Sprite
-								.getEvalueColors(++sequenceToSend[1]))));
-					}
-				}
-			}
-		});
-		panelMove.add(move_2);
-
-		move_3 = new JLabel();
-		move_3.setBounds(82, 20, 35, 35);
-		move_3.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(6))));
-		move_3.setTransferHandler(new TransferHandler("icon"));
-		move_3.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (!challenging && firstMoviment) {
-					if (sequenceToSend[2] == 5) {
-						sequenceToSend[2] = -1;
-					}
-					move_3.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(++sequenceToSend[2]))));
-				} else if (myTurn) {
-					if (challenging) {
-						if (sequenceToSend[2] == 5) {
-							sequenceToSend[2] = -1;
-						}
-						move_3.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(++sequenceToSend[2]))));
-					} else {
-						if (sequenceToSend[2] == 2) {
-							sequenceToSend[2] = -1;
-						}
-						move_3.setIcon(new ImageIcon(getClass().getResource(Sprite
-								.getEvalueColors(++sequenceToSend[2]))));
-					}
-				}
-			}
-		});
-		panelMove.add(move_3);
-
-		move_4 = new JLabel();
-		move_4.setBounds(121, 20, 35, 35);
-		move_4.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(6))));
-		move_4.setTransferHandler(new TransferHandler("icon"));
-		move_4.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				if (!challenging && firstMoviment) {
-					if (sequenceToSend[3] == 5) {
-						sequenceToSend[3] = -1;
-					}
-					move_4.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(++sequenceToSend[3]))));
-				} else if (myTurn) {
-					if (challenging) {
-						if (sequenceToSend[3] == 5) {
-							sequenceToSend[3] = -1;
-						}
-						move_4.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(++sequenceToSend[3]))));
-					} else {
-						if (sequenceToSend[3] == 2) {
-							sequenceToSend[3] = -1;
-						}
-						move_4.setIcon(new ImageIcon(getClass().getResource(Sprite
-								.getEvalueColors(++sequenceToSend[3]))));
-					}
-				}
-			}
-		});
-		panelMove.add(move_4);
-
-		btnSendSequence = new JButton();
-		btnSendSequence.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (myTurn) {
-					if (!challenging && firstMoviment) {
-						setPassword(sequenceToSend);
-						index_row--;
-					} else if (challenging) {
-						for (int i = 0; i < sequenceToSend.length; i++) {
-							getArrayLabels()[getIndex_row()][i].setIcon(new ImageIcon(getClass().getResource(Sprite
-									.getColor(sequenceToSend[i]))));
-						}
-					} else {
-						for (int i = 0; i < sequenceToSend.length; i++) {
-							arrayLabelsResponse[getIndex_row()][i].setIcon(new ImageIcon(getClass().getResource(Sprite
-									.getResponseColors(sequenceToSend[i]))));
-						}
-					}
-					checkSequenceToSend(sequenceToSend);
-				}
-			}
-
-		});
-		btnSendSequence.setIcon(new ImageIcon(getClass().getResource(Sprite.getIconButton(0))));
-		btnSendSequence.setBounds(188, 609, 45, 45);
-		panelGame.add(btnSendSequence);
-
 		JPanel panelChance_1 = new JPanel();
 		panelChance_1.setLayout(null);
 		panelChance_1.setBorder(new TitledBorder(null, "1\u00BA Chance",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelChance_1.setBounds(16, 529, 160, 60);
+		panelChance_1.setBounds(16, 583, 160, 60);
 		panelGame.add(panelChance_1);
 
 		JLabel labelChance11 = new JLabel();
@@ -284,7 +136,7 @@ public class GameFrame {
 		panelChance_2.setLayout(null);
 		panelChance_2.setBorder(new TitledBorder(null, "2\u00BA Chance",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelChance_2.setBounds(16, 473, 160, 60);
+		panelChance_2.setBounds(16, 527, 160, 60);
 		panelGame.add(panelChance_2);
 
 		JLabel labelChance21 = new JLabel();
@@ -312,7 +164,7 @@ public class GameFrame {
 		panelChance_3.setLayout(null);
 		panelChance_3.setBorder(new TitledBorder(null, "3\u00BA Chance",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelChance_3.setBounds(16, 418, 160, 60);
+		panelChance_3.setBounds(16, 472, 160, 60);
 		panelGame.add(panelChance_3);
 
 		JLabel labelChance31 = new JLabel();
@@ -340,7 +192,7 @@ public class GameFrame {
 		panelChance_4.setLayout(null);
 		panelChance_4.setBorder(new TitledBorder(null, "4\u00BA Chance",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelChance_4.setBounds(16, 362, 160, 60);
+		panelChance_4.setBounds(16, 416, 160, 60);
 		panelGame.add(panelChance_4);
 
 		JLabel labelChance41 = new JLabel();
@@ -368,7 +220,7 @@ public class GameFrame {
 		panelChance_5.setLayout(null);
 		panelChance_5.setBorder(new TitledBorder(null, "5\u00BA Chance",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelChance_5.setBounds(16, 307, 160, 60);
+		panelChance_5.setBounds(16, 361, 160, 60);
 		panelGame.add(panelChance_5);
 
 		JLabel labelChance51 = new JLabel();
@@ -396,7 +248,7 @@ public class GameFrame {
 		panelChance_6.setLayout(null);
 		panelChance_6.setBorder(new TitledBorder(null, "6\u00BA Chance",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelChance_6.setBounds(16, 252, 160, 60);
+		panelChance_6.setBounds(16, 306, 160, 60);
 		panelGame.add(panelChance_6);
 
 		JLabel labelChance61 = new JLabel();
@@ -424,7 +276,7 @@ public class GameFrame {
 		panelChance_7.setLayout(null);
 		panelChance_7.setBorder(new TitledBorder(null, "7\u00BA Chance",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelChance_7.setBounds(16, 196, 160, 60);
+		panelChance_7.setBounds(16, 250, 160, 60);
 		panelGame.add(panelChance_7);
 
 		JLabel labelChance71 = new JLabel();
@@ -452,7 +304,7 @@ public class GameFrame {
 		panelChance_8.setLayout(null);
 		panelChance_8.setBorder(new TitledBorder(null, "8\u00BA Chance",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelChance_8.setBounds(16, 140, 160, 60);
+		panelChance_8.setBounds(16, 194, 160, 60);
 		panelGame.add(panelChance_8);
 
 		JLabel labelChance81 = new JLabel();
@@ -480,7 +332,7 @@ public class GameFrame {
 		panelChance_9.setLayout(null);
 		panelChance_9.setBorder(new TitledBorder(null, "9\u00BA Chance",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelChance_9.setBounds(16, 84, 160, 60);
+		panelChance_9.setBounds(16, 138, 160, 60);
 		panelGame.add(panelChance_9);
 
 		JLabel labelChance91 = new JLabel();
@@ -508,7 +360,7 @@ public class GameFrame {
 		panelChance_10.setLayout(null);
 		panelChance_10.setBorder(new TitledBorder(null, "10\u00BA Chance",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelChance_10.setBounds(16, 30, 160, 60);
+		panelChance_10.setBounds(16, 84, 160, 60);
 		panelGame.add(panelChance_10);
 
 		JLabel labelChance101 = new JLabel();
@@ -536,7 +388,7 @@ public class GameFrame {
 		JPanel panelEvalue = new JPanel();
 		panelEvalue.setBorder(new TitledBorder(null, "", TitledBorder.LEADING,
 				TitledBorder.TOP, null, null));
-		panelEvalue.setBounds(188, 47, 45, 540);
+		panelEvalue.setBounds(192, 101, 45, 540);
 		panelGame.add(panelEvalue);
 		panelEvalue.setLayout(null);
 
@@ -818,216 +670,276 @@ public class GameFrame {
 		label_79.setBounds(3, 2, 12, 12);
 		populeArrayResponse(label_79, index_row++, index_collum);
 		panel_8.add(label_79);
+		
+		JPanel panelPassword = new JPanel();
+		panelPassword.setBounds(18, 27, 219, 60);
+		panelGame.add(panelPassword);
+		panelPassword.setBorder(new TitledBorder(null, "Senha",
+				TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelPassword.setLayout(null);
+		
+		lblPassword1 = new JLabel();
+		lblPassword1.setBounds(15, 22, 35, 35);
+		lblPassword1.setIcon(this.sprite.getColorByIndex(Sprite.INIT_BALL));
+		panelPassword.add(lblPassword1);
+		
+		lblPassword2 = new JLabel();
+		lblPassword2.setBounds(65, 22, 35, 35);
+		lblPassword2.setIcon(this.sprite.getColorByIndex(Sprite.INIT_BALL));
+		panelPassword.add(lblPassword2);
+		
+		lblPassword3 = new JLabel();
+		lblPassword3.setBounds(115, 22, 35, 35);
+		lblPassword3.setIcon(this.sprite.getColorByIndex(Sprite.INIT_BALL));
+		panelPassword.add(lblPassword3);
+		
+		lblPassword4 = new JLabel();
+		lblPassword4.setBounds(165, 22, 35, 35);
+		lblPassword4.setIcon(this.sprite.getColorByIndex(Sprite.INIT_BALL));
+		panelPassword.add(lblPassword4);
 		index_collum = 0;
 		index_row = 0;
 
 		JPanel panelChat = new JPanel();
 		panelChat.setBorder(new TitledBorder(null, "Chat",
 				TitledBorder.LEADING, TitledBorder.TOP, null, Color.RED));
-		panelChat.setBounds(271, 6, 330, 482);
+		panelChat.setBounds(272, 6, 240, 480);
 		frmMastermindGame.getContentPane().add(panelChat);
 		panelChat.setLayout(null);
-
-		btnSend = new JButton("Enviar");
-		btnSend.setEnabled(false);
-		btnSend.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String message = null;
-				;
-				if ((message = textToSend.getText()) != null) {
-					clientController.sendMessageChat(textToSend.getText());
-					textAreaChat.append("eu: " + message + "\n");
-					textToSend.setText(null);
-					textToSend.requestFocus();
-				}
-			}
-		});
-		btnSend.setBounds(247, 430, 70, 25);
-		panelChat.add(btnSend);
 
 		textToSend = new JTextField();
 		textToSend.setEnabled(false);
 		textToSend.setEditable(false);
-		textToSend.setBounds(15, 430, 230, 25);
+		textToSend.setBounds(15, 427, 210, 45);
 		panelChat.add(textToSend);
 		textToSend.setColumns(10);
 
 		textAreaChat = new JTextArea();
 		textAreaChat.setEnabled(false);
-		textAreaChat.setBounds(15, 160, 300, 250);
+		textAreaChat.setBounds(15, 165, 210, 250);
 		panelChat.add(textAreaChat);
 		textAreaChat.setEditable(false);
-
-		textFieldNickName = new JTextField();
-		textFieldNickName.setBounds(15, 95, 300, 25);
-		panelChat.add(textFieldNickName);
-		textFieldNickName.setColumns(10);
 
 		btnConnect = new JButton("Conectar");
 		btnConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				textFieldNickName.setEditable(false);
+				//textFieldNickName.setEditable(false);
 				btnConnect.setEnabled(false);
 				btnDisconnect.setEnabled(true);
-				btnSend.setEnabled(true);
+				//btnSend.setEnabled(true);
 				textToSend.setEnabled(true);
 				textToSend.setEditable(true);
 				clientController.initChat();
-				if (!textFieldNickName.getText().isEmpty()) {
-					clientController.setNickName(textFieldNickName.getText());
-				}
+//				if (!textFieldNickName.getText().isEmpty()) {
+//					clientController.setNickName(textFieldNickName.getText());
+//				}
 			}
 		});
-		btnConnect.setBounds(15, 126, 130, 25);
+		btnConnect.setBounds(24, 128, 87, 25);
 		panelChat.add(btnConnect);
 
 		btnDisconnect = new JButton("Sair");
 		btnDisconnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				textFieldNickName.setEditable(true);
+				//textFieldNickName.setEditable(true);
 				btnConnect.setEnabled(true);
 				btnDisconnect.setEnabled(false);
-				btnSend.setEnabled(false);
+				//btnSend.setEnabled(false);
 				textToSend.setEnabled(false);
 				textToSend.setEditable(false);
 				clientController.disconnectFromChat();
 			}
 		});
 		btnDisconnect.setEnabled(false);
-		btnDisconnect.setBounds(187, 126, 130, 25);
+		btnDisconnect.setBounds(135, 128, 80, 25);
 		panelChat.add(btnDisconnect);
+		
+		JPanel panelMyAvatar = new JPanel();
+		panelMyAvatar.setBorder(new TitledBorder(null, "An\u00F4nimo", TitledBorder.CENTER, TitledBorder.BOTTOM, null, null));
+		panelMyAvatar.setBounds(11, 29, 80, 84);
+		panelChat.add(panelMyAvatar);
+		panelMyAvatar.setLayout(null);
+		
+		JLabel myAvatar = new JLabel();
+		myAvatar.setLocation(7, 0);
+		myAvatar.setSize(66, 66);
+		myAvatar.setIcon(this.sprite.getEmotion());
+		panelMyAvatar.add(myAvatar);
+		
+		JPanel panelEnemyAvatar = new JPanel();
+		panelEnemyAvatar.setBorder(new TitledBorder(null, "An\u00F4nimo", TitledBorder.CENTER, TitledBorder.BOTTOM, null, null));
+		panelEnemyAvatar.setBounds(146, 29, 80, 84);
+		panelChat.add(panelEnemyAvatar);
+		panelEnemyAvatar.setLayout(null);
+		
+		JLabel enemyAvatar = new JLabel();
+		enemyAvatar.setBounds(7, 0, 66, 66);
+		enemyAvatar.setIcon(this.sprite.getEmotion());
+		panelEnemyAvatar.add(enemyAvatar);
+		
+		JLabel lblX = new JLabel("X");
+		lblX.setFont(new Font("Dialog", Font.PLAIN, 40));
+		lblX.setBounds(102, 55, 33, 24);
+		panelChat.add(lblX);
 
-		JLabel lblUser = new JLabel("Usu\u00E1rio");
-		lblUser.setBounds(15, 21, 55, 14);
-		panelChat.add(lblUser);
+		JPanel panelBalls = new JPanel();
+		panelBalls.setLayout(null);
+		panelBalls.setBorder(new TitledBorder(null, "Cores", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelBalls.setBounds(271, 601, 240, 60);
+		frmMastermindGame.getContentPane().add(panelBalls);
 
-		JPanel panelPassword = new JPanel();
-		panelPassword.setBorder(new TitledBorder(null, "Senha",
+		JLabel redLabel = new JLabel();
+		redLabel.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				JComponent component = (JComponent) e.getSource();
+				TransferHandler handler = component.getTransferHandler();
+				handler.exportAsDrag(component, e, TransferHandler.COPY);
+			}
+		});
+		redLabel.setBounds(4, 23, 35, 35);
+		redLabel.setIcon(this.sprite.getColorByIndex(Sprite.RED));
+		redLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		redLabel.setTransferHandler(new TransferHandler("icon"));
+		panelBalls.add(redLabel);
+
+		JLabel greenLabel = new JLabel();
+		greenLabel.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				JComponent component = (JComponent) e.getSource();
+				TransferHandler handler = component.getTransferHandler();
+				handler.exportAsDrag(component, e, TransferHandler.COPY);
+			}
+		});
+		greenLabel.setBounds(43, 23, 35, 35);
+		greenLabel.setIcon(this.sprite.getColorByIndex(Sprite.GREEN));
+		greenLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		greenLabel.setTransferHandler(new TransferHandler("icon"));
+		panelBalls.add(greenLabel);
+
+		JLabel orangeLabel = new JLabel();
+		orangeLabel.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				JComponent component = (JComponent) e.getSource();
+				TransferHandler handler = component.getTransferHandler();
+				handler.exportAsDrag(component, e, TransferHandler.COPY);
+			}
+		});
+		orangeLabel.setBounds(82, 23, 35, 35);
+		orangeLabel.setIcon(this.sprite.getColorByIndex(Sprite.ORANGE));
+		orangeLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		orangeLabel.setTransferHandler(new TransferHandler("icon"));
+		panelBalls.add(orangeLabel);
+
+		JLabel yellowLabel = new JLabel();
+		yellowLabel.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				JComponent component = (JComponent) e.getSource();
+				TransferHandler handler = component.getTransferHandler();
+				handler.exportAsDrag(component, e, TransferHandler.COPY);
+			}
+		});
+		yellowLabel.setBounds(121, 23, 35, 35);
+		yellowLabel.setIcon(this.sprite.getColorByIndex(Sprite.YELLOW));
+		yellowLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		yellowLabel.setTransferHandler(new TransferHandler("icon"));
+		panelBalls.add(yellowLabel);
+
+		JLabel blueLabel = new JLabel();
+		blueLabel.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				JComponent component = (JComponent) e.getSource();
+				TransferHandler handler = component.getTransferHandler();
+				handler.exportAsDrag(component, e, TransferHandler.COPY);
+			}
+		});
+		blueLabel.setBounds(160, 23, 35, 35);
+		blueLabel.setIcon(this.sprite.getColorByIndex(Sprite.BLUE));
+		blueLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		blueLabel.setTransferHandler(new TransferHandler("icon"));
+		panelBalls.add(blueLabel);
+
+		JLabel darkBlueLabel = new JLabel();
+		darkBlueLabel.addMouseMotionListener(new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				JComponent component = (JComponent) e.getSource();
+				TransferHandler handler = component.getTransferHandler();
+				handler.exportAsDrag(component, e, TransferHandler.COPY);
+			}
+		});
+		darkBlueLabel.setBounds(199, 23, 35, 35);
+		darkBlueLabel.setIcon(this.sprite.getColorByIndex(Sprite.DARK_BLUE));
+		darkBlueLabel.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		darkBlueLabel.setTransferHandler(new TransferHandler("icon"));
+		panelBalls.add(darkBlueLabel);
+		
+		JPanel panelMove = new JPanel();
+		panelMove.setBounds(271, 546, 180, 60);
+		frmMastermindGame.getContentPane().add(panelMove);
+		panelMove.setBorder(new TitledBorder(UIManager
+				.getBorder("TitledBorder.border"), "Sua Jogada",
 				TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panelPassword.setBounds(269, 518, 330, 80);
-		frmMastermindGame.getContentPane().add(panelPassword);
-		panelPassword.setLayout(null);
+		
+		move_1 = new JLabel();
+		move_1.setBounds(8, 20, 35, 35);
+		move_1.setIcon(this.sprite.getColorByIndex(Sprite.INIT_BALL));
+		move_1.setTransferHandler(new TransferHandler("icon"));
+		panelMove.setLayout(null);
+		panelMove.add(move_1);
+		
+		move_2 = new JLabel();
+		move_2.setBounds(51, 20, 35, 35);
+		move_2.setIcon(this.sprite.getColorByIndex(Sprite.INIT_BALL));
+		move_2.setTransferHandler(new TransferHandler("icon"));
+		panelMove.add(move_2);
+		
+		move_3 = new JLabel();
+		move_3.setBounds(94, 20, 35, 35);
+		move_3.setIcon(this.sprite.getColorByIndex(Sprite.INIT_BALL));
+		move_3.setTransferHandler(new TransferHandler("icon"));
+		panelMove.add(move_3);
+		
+		move_4 = new JLabel();
+		move_4.setBounds(137, 20, 35, 35);
+		move_4.setIcon(this.sprite.getColorByIndex(Sprite.INIT_BALL));
+		move_4.setTransferHandler(new TransferHandler("icon"));
+		panelMove.add(move_4);
+		
+		btnSendSequence = new JButton();
+		btnSendSequence.setBounds(466, 561, 45, 45);
+		frmMastermindGame.getContentPane().add(btnSendSequence);
+		btnSendSequence.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (myTurn) {
+					sequenceToSend[0] = sprite.getIndexByColor(move_1.getIcon());
+					sequenceToSend[1] = sprite.getIndexByColor(move_2.getIcon());
+					sequenceToSend[2] = sprite.getIndexByColor(move_3.getIcon());
+					sequenceToSend[3] = sprite.getIndexByColor(move_4.getIcon());
+					checkSequenceToSend(sequenceToSend);
+				}
+			}
 
-		lblPassword1 = new JLabel();
-		lblPassword1.setBounds(22, 22, 54, 52);
-		lblPassword1.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(7))));
-		panelPassword.add(lblPassword1);
-
-		lblPassword2 = new JLabel();
-		lblPassword2.setBounds(98, 22, 54, 52);
-		lblPassword2.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(7))));
-		panelPassword.add(lblPassword2);
-
-		lblPassword3 = new JLabel();
-		lblPassword3.setBounds(174, 22, 54, 52);
-		lblPassword3.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(7))));
-		panelPassword.add(lblPassword3);
-
-		lblPassword4 = new JLabel();
-		lblPassword4.setBounds(250, 22, 54, 52);
-		lblPassword4.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(7))));
-		panelPassword.add(lblPassword4);
+		});
+		btnSendSequence.setIcon(this.sprite.getButton());
 		
 		JPanel panel_9 = new JPanel();
-		panel_9.setLayout(null);
-		panel_9.setBorder(new TitledBorder(UIManager
-						.getBorder("TitledBorder.border"), "Sua Jogada",
-						TitledBorder.LEADING, TitledBorder.TOP, null, null));
-		panel_9.setBounds(271, 606, 328, 60);
+		panel_9.setBorder(new TitledBorder(null, "Tempo", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_9.setBounds(271, 498, 110, 45);
 		frmMastermindGame.getContentPane().add(panel_9);
-		
-		JLabel label = new JLabel();
-		label.addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				JComponent component = (JComponent) e.getSource();
-				TransferHandler handler = component.getTransferHandler();
-				handler.exportAsDrag(component, e, TransferHandler.COPY);
-			}
-		});
-		label.setBounds(16, 20, 35, 35);
-		label.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(0))));
-		label.setTransferHandler(new TransferHandler("icon"));
-		panel_9.add(label);
-		
-		JLabel label_1 = new JLabel();
-		label_1.addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				JComponent component = (JComponent) e.getSource();
-				TransferHandler handler = component.getTransferHandler();
-				handler.exportAsDrag(component, e, TransferHandler.COPY);
-			}
-		});
-		label_1.setBounds(67, 20, 35, 35);
-		label_1.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(1))));
-		label_1.setTransferHandler(new TransferHandler("icon"));
-		panel_9.add(label_1);
-		
-		JLabel label_2 = new JLabel();
-		label_2.addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				JComponent component = (JComponent) e.getSource();
-				TransferHandler handler = component.getTransferHandler();
-				handler.exportAsDrag(component, e, TransferHandler.COPY);
-			}
-		});
-		label_2.setBounds(118, 20, 35, 35);
-		label_2.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(2))));
-		label_2.setTransferHandler(new TransferHandler("icon"));
-		panel_9.add(label_2);
-		
-		JLabel label_3 = new JLabel();
-		label_3.addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				JComponent component = (JComponent) e.getSource();
-				TransferHandler handler = component.getTransferHandler();
-				handler.exportAsDrag(component, e, TransferHandler.COPY);
-			}
-		});
-		label_3.setBounds(169, 20, 35, 35);
-		label_3.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(3))));
-		label_3.setTransferHandler(new TransferHandler("icon"));
-		panel_9.add(label_3);
-		
-		JLabel label_4 = new JLabel();
-		label_4.addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				JComponent component = (JComponent) e.getSource();
-				TransferHandler handler = component.getTransferHandler();
-				handler.exportAsDrag(component, e, TransferHandler.COPY);
-			}
-		});
-		label_4.setBounds(220, 20, 35, 35);
-		label_4.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(4))));
-		label_4.setTransferHandler(new TransferHandler("icon"));
-		panel_9.add(label_4);
-		
-		JLabel label_5 = new JLabel();
-		label_5.addMouseMotionListener(new MouseMotionAdapter() {
-			@Override
-			public void mouseDragged(MouseEvent e) {
-				JComponent component = (JComponent) e.getSource();
-				TransferHandler handler = component.getTransferHandler();
-				handler.exportAsDrag(component, e, TransferHandler.COPY);
-			}
-		});
-		label_5.setBounds(271, 20, 35, 35);
-		label_5.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(5))));
-		label_5.setTransferHandler(new TransferHandler("icon"));
-		panel_9.add(label_5);
 
 	}
 
 	private void setPassword(int[] sequenceToSend) {
 		password = sequenceToSend;
-		lblPassword1.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(sequenceToSend[0]))));
-		lblPassword2.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(sequenceToSend[1]))));
-		lblPassword3.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(sequenceToSend[2]))));
-		lblPassword4.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(sequenceToSend[3]))));
+		lblPassword1.setIcon(this.sprite.getColorByIndex(sequenceToSend[0]));
+		lblPassword2.setIcon(this.sprite.getColorByIndex(sequenceToSend[1]));
+		lblPassword3.setIcon(this.sprite.getColorByIndex(sequenceToSend[2]));
+		lblPassword4.setIcon(this.sprite.getColorByIndex(sequenceToSend[3]));
 		this.firstMoviment = false;
 	}
 
@@ -1073,22 +985,8 @@ public class GameFrame {
 	}
 
 	public void setSequenceToGameView(int[] colorResponse) {
-		if (firstMoviment) {
-			password = colorResponse;
-			firstMoviment = false;
-		} else {
-			if (challenging) {
-				for (int i = 0; i < colorResponse.length; i++) {
-					getArrayLabelsResponse()[getIndex_row() - 1][i]
-							.setIcon(new ImageIcon(getClass().getResource(Sprite.getResponseColors(colorResponse[i]))));
-				}
-				verifyWinner(colorResponse);
-			} else {
-				for (int i = 0; i < colorResponse.length; i++) {
-					getArrayLabels()[getIndex_row()][i].setIcon(new ImageIcon(getClass().getResource(Sprite
-							.getColor(colorResponse[i]))));
-				}
-			}
+		for (int i = 0; i < colorResponse.length; i++) {
+			
 		}
 		JOptionPane.showMessageDialog(null, "Sua Vez.");
 		myTurnGame(true);
@@ -1124,10 +1022,10 @@ public class GameFrame {
 
 	private void resetMoviment() {
 		sequenceToSend[0] = sequenceToSend[1] = sequenceToSend[2] = sequenceToSend[3] = -1;
-		move_1.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(6))));
-		move_2.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(6))));
-		move_3.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(6))));
-		move_4.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(6))));
+		move_1.setIcon(this.sprite.getColorByIndex(Sprite.INIT_BALL));
+		move_2.setIcon(this.sprite.getColorByIndex(Sprite.INIT_BALL));
+		move_3.setIcon(this.sprite.getColorByIndex(Sprite.INIT_BALL));
+		move_4.setIcon(this.sprite.getColorByIndex(Sprite.INIT_BALL));
 	}
 
 	private void myTurnGame(boolean turn) {
@@ -1160,10 +1058,10 @@ public class GameFrame {
 		}
 		this.firstMoviment = true;
 		this.password = null;
-		this.lblPassword1.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(7))));
-		this.lblPassword2.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(7))));
-		this.lblPassword3.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(7))));
-		this.lblPassword4.setIcon(new ImageIcon(getClass().getResource(Sprite.getColor(7))));
+		this.lblPassword1.setIcon(this.sprite.getColorByIndex(Sprite.SECRET_BALL));
+		this.lblPassword2.setIcon(this.sprite.getColorByIndex(Sprite.SECRET_BALL));
+		this.lblPassword3.setIcon(this.sprite.getColorByIndex(Sprite.SECRET_BALL));
+		this.lblPassword4.setIcon(this.sprite.getColorByIndex(Sprite.SECRET_BALL));
 
 		this.index_row = 0;
 		myTurnGame(true);
@@ -1172,32 +1070,29 @@ public class GameFrame {
 	public void Alert(boolean b) {
 		if (b) {
 			JOptionPane
-					.showMessageDialog(
-							null,
-							"O outro jogador desconectou e como não dá pra jogar só...\nO jogo vai encerrar.\nAté a próxima.");
+			.showMessageDialog(
+					null,
+					"O outro jogador desconectou e como não dá pra jogar só...\nO jogo vai encerrar.\nAté a próxima.");
 			System.exit(0);
 		} else {
 			resetGame();
 		}
 	}
-	
+
 	private void checkSequenceToSend(int[] sequence) {
-		if (checkSequence(sequence)) {
-			clientController.sendSequenceColors(sequenceToSend);
-			myTurnGame(false);
-			index_row++;
-			resetMoviment();
-		}
-	}
-	
-	private boolean checkSequence(int[] sequence) {
+
 		for (int i = 0; i < sequence.length; i++) {
-			for (int j = 0; j < sequence.length; j++) {
+			for (int j = i+1; j < sequence.length; j++) {
 				if (sequence[i] == sequence[j]) {
-					return false;
+					JOptionPane.showMessageDialog(null, "Desculpe mas não são permitidas peças repetidas.\nTente outra combinação por favor.");
+					return;
 				}
 			}
 		}
-		return true;
+
+		clientController.sendSequenceColors(sequence);
+		myTurnGame(false);
+		index_row++;
+		resetMoviment();
 	}
 }

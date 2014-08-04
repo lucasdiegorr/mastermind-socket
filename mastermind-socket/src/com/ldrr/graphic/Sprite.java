@@ -5,6 +5,7 @@ package com.ldrr.graphic;
 
 import java.util.ArrayList;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 
@@ -14,30 +15,49 @@ import javax.swing.ImageIcon;
  */
 public class Sprite {
 
-	private final static String[] colors = { "/red.png", "/green.png", "/orange.png", "/yellow.png","/blue.png", "/dark_blue.png", "/init_ball.png", "/secret_ball.png"};
-	private final static String[] buttons = { "/Accept-icon.png" };
-	private final static String[] evalueColors = { "/black.png","/white.png", "/blanck_ball.png" };
-	private final static String[] responseColors = {"/Eval_Black.png", "/Eval_White.png", "/Eval_Blank.png"};
+	private String[] colors = { "/red.png", "/green.png", "/orange.png", "/yellow.png","/blue.png", "/dark_blue.png","/black.png","/white.png", "/blanck_ball.png", "/Eval_Black.png", "/Eval_White.png", "/Eval_Blank.png", "/init_ball.png", "/secret_ball.png"};
+	private String[] responseColors = {"/Eval_Black.png", "/Eval_White.png", "/Eval_Blank.png"};
 
-	private ArrayList<ImageIcon> arrayColors = new ArrayList<ImageIcon>();
+	public static int RED = 0;
+	public static int GREEN = 1;
+	public static int ORANGE = 2;
+	public static int YELLOW = 3;
+	public static int BLUE = 4;
+	public static int DARK_BLUE = 5;
+	public static int BLACK = 6;
+	public static int WHITE = 7;
+	public static int BLANCK_BALL = 8;
+	public static int EVAL_BLACK = 9;
+	public static int EVAL_WHITE = 10;
+	public static int EVAL_BLANCK = 11;
+	public static int INIT_BALL = 12;
+	public static int SECRET_BALL = 13;
 	
-	public static String getColor(int index) {
-		return colors[index];
-	}
-
-	public static String getIconButton(int index) {
-		return buttons[index];
-	}
-
-	public static String getEvalueColors(int index) {
-		return evalueColors[index];
+	private ArrayList<Icon> arrayColors = new ArrayList<Icon>();
+	
+	public Sprite() {
+		for (int i = 0; i < this.colors.length; i++) {
+			arrayColors.add(new ImageIcon(getClass().getResource(colors[i])));
+		}
 	}
 	
-	public static String getResponseColors(int index) {
-		return responseColors[index];
+	public Icon getColorByIndex(int index) {
+		return arrayColors.get(index);
 	}
 	
-	public ArrayList<ImageIcon> getArrayColors() {
-		return arrayColors;
+	public Icon getResponseColorsByIndex(int index) {
+		return new ImageIcon(getClass().getResource(this.responseColors[index]));
+	}
+	
+	public Icon getButton() {
+		return new ImageIcon(getClass().getResource("/accept.png"));
+	}
+	
+	public int getIndexByColor(Icon color) {
+		return this.arrayColors.indexOf(color);
+	}
+	
+	public Icon getEmotion() {
+		return new ImageIcon(getClass().getResource("/emotion.png"));
 	}
 }
