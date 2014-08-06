@@ -48,7 +48,6 @@ public class ThreadServerGame implements Runnable {
 		} catch (Exception e) {
 			this.server.disconnect(this.client);
 			this.server.sendAlert();
-			e.printStackTrace();
 		}
 	}
 }

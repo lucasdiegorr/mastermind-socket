@@ -108,4 +108,8 @@ public class ClientChat implements Runnable {
 	public void setClientName(String clientName) {
 		this.clientName = clientName;
 	}
+	
+	public String getClientName() {
+		return clientName;
+	}
 }

@@ -27,6 +27,11 @@ public class ClientController {
 		new Thread(clientChat).start();
 	}
 
+	public void initChat(String address, int port) {
+		this.clientChat = new ClientChat(address, port, this);
+		new Thread(clientChat).start();
+	}
+	
 	public void initGame() {
 		this.clientGame = new ClientGame(this);
 		new Thread(clientGame).start();
@@ -57,6 +62,10 @@ public class ClientController {
 		this.clientChat.setClientName(nickName);
 	}
 
+	public String getNickName() {
+		return this.clientChat.getClientName();
+	}
+	
 	public void disconnectFromChat() {
 		try {
 			this.clientChat.getReader().close();
@@ -88,5 +97,6 @@ public class ClientController {
 			this.clientGame.sendMessage("RESETGAME");
 		}
 	}
+
 
 }

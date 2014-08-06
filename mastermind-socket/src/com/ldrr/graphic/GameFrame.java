@@ -6,6 +6,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextArea;
 import javax.swing.JPanel;
 import javax.swing.RepaintManager;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.TransferHandler;
 import javax.swing.border.TitledBorder;
 import javax.swing.JButton;
@@ -33,6 +34,10 @@ import java.awt.event.FocusEvent;
 import java.util.Arrays;
 import java.awt.GridLayout;
 import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+import javax.swing.JScrollPane;
 
 public class GameFrame {
 
@@ -68,6 +73,8 @@ public class GameFrame {
 	private JLabel colorLabel4;
 	private JLabel colorLabel5;
 	private JLabel colorLabel6;
+	private JPanel panelMyAvatar;
+	private JPanel panelEnemyAvatar;
 
 	/**
 	 * Create the application.
@@ -89,8 +96,10 @@ public class GameFrame {
 			int port = Integer.parseInt(JOptionPane
 					.showInputDialog("Em qual sala ele está?"));
 			this.clientController.initGame(address, port);
+			this.clientController.initChat(address, port-1000);
 		} else {
 			this.clientController.initGame();
+			this.clientController.initChat();
 		}
 	}
 
@@ -716,31 +725,45 @@ public class GameFrame {
 		panelChat.setLayout(null);
 
 		textToSend = new JTextField();
+		textToSend.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				int key = e.getKeyCode();
+				if (key == KeyEvent.VK_ENTER) {
+					if (!textToSend.getText().isEmpty()) {
+						clientController.sendMessageChat(textToSend.getText());
+						textAreaChat.append("eu: " + textToSend.getText() + "\n");
+						textToSend.setText(null);
+						textToSend.requestFocus();
+					}
+				}
+			}
+		});
 		textToSend.setEnabled(false);
 		textToSend.setEditable(false);
-		textToSend.setBounds(15, 427, 210, 45);
+		textToSend.setBounds(15, 427, 210, 40);
 		panelChat.add(textToSend);
 		textToSend.setColumns(10);
 
 		textAreaChat = new JTextArea();
 		textAreaChat.setEnabled(false);
-		textAreaChat.setBounds(15, 165, 210, 250);
-		panelChat.add(textAreaChat);
+		textAreaChat.setCaretPosition(textAreaChat.getDocument().getLength());
+		textAreaChat.setBounds(0, 0, 211, 410);
 		textAreaChat.setEditable(false);
 
 		btnConnect = new JButton("Conectar");
 		btnConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//textFieldNickName.setEditable(false);
+				String nickname = JOptionPane.showInputDialog(null, "Insira o nome de usuário:");
+				if (nickname.isEmpty()) {
+					clientController.setNickName("Anônimo");
+				}
+				clientController.setNickName(nickname);
+				panelMyAvatar.setBorder(new TitledBorder(null, nickname, TitledBorder.CENTER, TitledBorder.BOTTOM, null, null));
 				btnConnect.setEnabled(false);
 				btnDisconnect.setEnabled(true);
-				//btnSend.setEnabled(true);
 				textToSend.setEnabled(true);
 				textToSend.setEditable(true);
-				clientController.initChat();
-				//				if (!textFieldNickName.getText().isEmpty()) {
-				//					clientController.setNickName(textFieldNickName.getText());
-				//				}
 			}
 		});
 		btnConnect.setBounds(24, 128, 87, 25);
@@ -749,10 +772,8 @@ public class GameFrame {
 		btnDisconnect = new JButton("Sair");
 		btnDisconnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//textFieldNickName.setEditable(true);
 				btnConnect.setEnabled(true);
 				btnDisconnect.setEnabled(false);
-				//btnSend.setEnabled(false);
 				textToSend.setEnabled(false);
 				textToSend.setEditable(false);
 				clientController.disconnectFromChat();
@@ -762,7 +783,7 @@ public class GameFrame {
 		btnDisconnect.setBounds(135, 128, 80, 25);
 		panelChat.add(btnDisconnect);
 
-		JPanel panelMyAvatar = new JPanel();
+		panelMyAvatar = new JPanel();
 		panelMyAvatar.setBorder(new TitledBorder(null, "An\u00F4nimo", TitledBorder.CENTER, TitledBorder.BOTTOM, null, null));
 		panelMyAvatar.setBounds(11, 29, 80, 84);
 		panelChat.add(panelMyAvatar);
@@ -774,7 +795,7 @@ public class GameFrame {
 		myAvatar.setIcon(this.sprite.getEmotion());
 		panelMyAvatar.add(myAvatar);
 
-		JPanel panelEnemyAvatar = new JPanel();
+		panelEnemyAvatar = new JPanel();
 		panelEnemyAvatar.setBorder(new TitledBorder(null, "An\u00F4nimo", TitledBorder.CENTER, TitledBorder.BOTTOM, null, null));
 		panelEnemyAvatar.setBounds(146, 29, 80, 84);
 		panelChat.add(panelEnemyAvatar);
@@ -789,6 +810,11 @@ public class GameFrame {
 		lblX.setFont(new Font("Dialog", Font.PLAIN, 40));
 		lblX.setBounds(102, 55, 33, 24);
 		panelChat.add(lblX);
+		
+		JScrollPane scrollPane = new JScrollPane(textAreaChat);
+		scrollPane.setBounds(10, 164, 220, 250);
+		scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		panelChat.add(scrollPane);
 
 		panelBalls = new JPanel();
 		panelBalls.setLayout(null);
@@ -1001,8 +1027,8 @@ public class GameFrame {
 			}else{
 				for (int i = 0; i < colorResponse.length; i++) {
 					arrayLabelsResponse[index_row-1][i].setIcon(sprite.getColorByIndex(colorResponse[i]+3));
-					verifyWinner(colorResponse);
 				}
+				verifyWinner(colorResponse);
 			}
 		}else {
 			for (int j = 0; j < colorResponse.length; j++) {
@@ -1017,21 +1043,19 @@ public class GameFrame {
 	private void verifyWinner(int[] colorResponse) {
 		for (int i = 0; i < colorResponse.length; i++) {
 			if (colorResponse[i] != Sprite.BLACK) {
+				if (index_row == 10) {
+					setPassword(password);
+					JOptionPane.showMessageDialog(null, "Você perdeu. Que pena. Até a próxima.");
+					System.exit(0);
+				}
 				return;
 			}
 		}
 
-		if (index_row == 10) {
-			JOptionPane.showMessageDialog(null, "Você perdeu.");
-			if (JOptionPane.showConfirmDialog(null, "Gostaria de jogar de novo?") == JOptionPane.OK_OPTION) {
-				resetGame();
-			}
-		}
 
-		JOptionPane.showMessageDialog(null, "Parabéns você ganhou!!! Muito bem!!!");
-		if (JOptionPane.showConfirmDialog(null, "Gostaria de jogar de novo?") == JOptionPane.OK_OPTION) {
-			resetGame();
-		}
+		JOptionPane.showMessageDialog(null, "Parabéns você venceu!!! Até a próxima");
+		setPassword(password);
+		System.exit(0);
 	}
 
 	private void resetMoviment() {
@@ -1071,10 +1095,10 @@ public class GameFrame {
 		}
 		this.firstMoviment = true;
 		this.password = null;
-		this.lblPassword1.setIcon(this.sprite.getColorByIndex(Sprite.SECRET_BALL));
-		this.lblPassword2.setIcon(this.sprite.getColorByIndex(Sprite.SECRET_BALL));
-		this.lblPassword3.setIcon(this.sprite.getColorByIndex(Sprite.SECRET_BALL));
-		this.lblPassword4.setIcon(this.sprite.getColorByIndex(Sprite.SECRET_BALL));
+		this.lblPassword1.setIcon(this.sprite.getColorByIndex(Sprite.INIT_BALL));
+		this.lblPassword2.setIcon(this.sprite.getColorByIndex(Sprite.INIT_BALL));
+		this.lblPassword3.setIcon(this.sprite.getColorByIndex(Sprite.INIT_BALL));
+		this.lblPassword4.setIcon(this.sprite.getColorByIndex(Sprite.INIT_BALL));
 
 		this.index_row = 0;
 		myTurnGame(true);
@@ -1103,6 +1127,9 @@ public class GameFrame {
 					}
 				}
 			}
+			for (int i = 0; i < sequence.length; i++) {
+				this.arrayLabelsSequence[this.index_row][i].setIcon(this.sprite.getColorByIndex(sequence[i]));
+			}
 		}else {
 			if (firstMoviment) {
 				for (int i = 0; i < sequence.length; i++) {
@@ -1123,6 +1150,10 @@ public class GameFrame {
 				panelBalls.remove(colorLabel5);
 				panelBalls.remove(colorLabel6);
 				panelBalls.repaint();
+			}else{
+				for (int i = 0; i < sequence.length; i++) {
+					arrayLabelsResponse[index_row][i].setIcon(this.sprite.getColorByIndex(sequence[i]+3));
+				}
 			}
 		}
 
