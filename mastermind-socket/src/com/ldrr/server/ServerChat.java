@@ -68,15 +68,17 @@ public class ServerChat implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			Socket client;
-			try {
-				client = this.server.accept();
-				listClient.add(client);
-				System.out.println("Server on e com " + this.listClient.size()
-						+ " usuarios.");
-				new Thread(new ThreadServerChat(client, this)).start();
-			} catch (IOException e) {
-				e.printStackTrace();
+			while (this.listClient.size() < 2) {
+				Socket client;
+				try {
+					client = this.server.accept();
+					listClient.add(client);
+					System.out.println("Server on e com " + this.listClient.size()
+							+ " usuarios.");
+					new Thread(new ThreadServerChat(client, this)).start();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -90,7 +92,7 @@ public class ServerChat implements Runnable {
 		}
 		return address;
 	}
-	
+
 	public int getPort() {
 		return this.server.getLocalPort();
 	}

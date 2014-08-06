@@ -73,7 +73,7 @@ public class Inicial {
 				EventQueue.invokeLater(new Runnable() {
 					public void run() {
 						try {
-							GameFrame window = new GameFrame(true);
+							new GameFrame(true);
 							frame.setVisible(false);
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -95,7 +95,7 @@ public class Inicial {
 							ServerGame game = new ServerGame();
 							new Thread(chat).start();
 							new Thread(game).start();
-							GameFrame window = new GameFrame(false);
+							new GameFrame(false);
 							frame.setVisible(false);
 							JOptionPane.showMessageDialog(
 									null,

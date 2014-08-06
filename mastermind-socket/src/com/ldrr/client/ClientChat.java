@@ -69,7 +69,6 @@ public class ClientChat implements Runnable {
 			}
 		} catch (IOException e) {
 			disconnect();
-			e.printStackTrace();
 		}
 	}
 

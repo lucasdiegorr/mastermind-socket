@@ -67,13 +67,15 @@ public class ServerGame implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			Socket client;
-			try {
-				client = this.server.accept();
-				listClient.add(client);
-				new Thread(new ThreadServerGame(client, this)).start();
-			} catch (Exception e) {
-				e.printStackTrace();
+			while (this.listClient.size() < 2) {
+				Socket client;
+				try {
+					client = this.server.accept();
+					listClient.add(client);
+					new Thread(new ThreadServerGame(client, this)).start();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
@@ -101,7 +103,7 @@ public class ServerGame implements Runnable {
 		}
 		return address;
 	}
-	
+
 	public int getPort() {
 		return this.server.getLocalPort();
 	}

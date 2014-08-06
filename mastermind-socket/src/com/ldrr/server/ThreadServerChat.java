@@ -48,7 +48,6 @@ public class ThreadServerChat implements Runnable {
 		} catch (IOException e) {
 			this.server.disconnect(this.client);
 			this.server.sendMessage("O cliente desconectou do chat.", this);
-			e.printStackTrace();
 		}
 	}
 
