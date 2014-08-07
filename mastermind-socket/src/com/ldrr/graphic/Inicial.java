@@ -55,17 +55,17 @@ public class Inicial {
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 450, 255);
+		frame.setBounds(100, 100, 560, 250);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 
 		JLabel lblBemVindoAo = new JLabel("Bem vindo ao Jogo MasterMind");
 		lblBemVindoAo.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC,
 				22));
-		lblBemVindoAo.setBounds(8, 17, 422, 66);
+		lblBemVindoAo.setBounds(61, 17, 422, 66);
 		frame.getContentPane().add(lblBemVindoAo);
 
-		JButton btnDesafiante = new JButton("Desafiante");
+		JButton btnDesafiante = new JButton("Descobridor de Enigmas");
 		btnDesafiante.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC,
 				13));
 		btnDesafiante.addActionListener(new ActionListener() {
@@ -82,10 +82,10 @@ public class Inicial {
 				});
 			}
 		});
-		btnDesafiante.setBounds(161, 131, 116, 29);
+		btnDesafiante.setBounds(143, 159, 258, 30);
 		frame.getContentPane().add(btnDesafiante);
 
-		JButton btnDesafiado = new JButton("Desafiado");
+		JButton btnDesafiado = new JButton("Mestre das Senhas");
 		btnDesafiado.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				EventQueue.invokeLater(new Runnable() {
@@ -101,9 +101,7 @@ public class Inicial {
 									null,
 									"Jogue com seu amigo informando onde está através dos endereços:\n"
 											+ "Game Server: "
-											+ game.getAddress() + " - Sala: "+ game.getPort() +"\n"
-											+ "Chat: "
-											+ chat.getAddress() + " - Sala: " + chat.getPort());
+											+ game.getAddress() + " - Sala: "+ game.getPort());
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -113,12 +111,12 @@ public class Inicial {
 		});
 		btnDesafiado.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC,
 				13));
-		btnDesafiado.setBounds(161, 172, 116, 29);
+		btnDesafiado.setBounds(174, 117, 196, 30);
 		frame.getContentPane().add(btnDesafiado);
 
 		JLabel lblQuemGostariaDe = new JLabel("Quem gostaria de ser?");
 		lblQuemGostariaDe.setFont(new Font("Arial Black", Font.PLAIN, 13));
-		lblQuemGostariaDe.setBounds(135, 81, 169, 24);
+		lblQuemGostariaDe.setBounds(187, 81, 169, 24);
 		frame.getContentPane().add(lblQuemGostariaDe);
 	}
 }

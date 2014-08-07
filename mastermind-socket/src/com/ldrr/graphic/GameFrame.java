@@ -10,7 +10,6 @@ import javax.swing.Timer;
 import javax.swing.TransferHandler;
 import javax.swing.border.TitledBorder;
 import javax.swing.JButton;
-import javax.swing.JTextField;
 
 import com.ldrr.client.ClientController;
 
@@ -95,19 +94,7 @@ public class GameFrame {
 			this.clientController.initGame();
 			this.clientController.initChat();
 		}
-		if (JOptionPane.showConfirmDialog(null, "Gostaria de se conectar automaticamente ao chat?") == JOptionPane.OK_OPTION) {
-			String nickname = JOptionPane.showInputDialog(null, "Insira o nome de usuário:");
-			if (nickname.isEmpty()) {
-				clientController.setNickName("Eu");
-			}else{
-				clientController.setNickName(nickname);
-			}
-			panelMyAvatar.setBorder(new TitledBorder(null, nickname, TitledBorder.CENTER, TitledBorder.BOTTOM, null, null));
-			btnConnect.setEnabled(false);
-			btnDisconnect.setEnabled(true);
-			textToSend.setEnabled(true);
-			textToSend.setEditable(true);
-		}
+		
 	}
 
 	/**
