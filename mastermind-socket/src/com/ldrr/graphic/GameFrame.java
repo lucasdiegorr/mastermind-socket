@@ -715,12 +715,11 @@ public class GameFrame {
 		textToSend.setLineWrap(true);
 		textToSend.addKeyListener(new KeyAdapter() {
 			@Override
-			public void keyPressed(KeyEvent e) {
-				int key = e.getKeyCode();
-				if (key == KeyEvent.VK_ENTER) {
+			public void keyReleased(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					if (!textToSend.getText().isEmpty()) {
 						clientController.sendMessageChat(textToSend.getText());
-						textAreaChat.append("eu: " + textToSend.getText() + "\n");
+						textAreaChat.append("eu: " + textToSend.getText());
 						textToSend.setText(null);
 						textToSend.requestFocus();
 					}
@@ -732,11 +731,10 @@ public class GameFrame {
 		textToSend.setEditable(false);
 		textToSend.setBounds(15, 427, 210, 40);
 		textToSend.setColumns(10);
-		//panelChat.add(textToSend);
 
 		JScrollPane scrollPaneTextToSend = new JScrollPane(textToSend);
 		scrollPaneTextToSend.setBounds(15, 427, 210, 40);
-		scrollPaneTextToSend.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPaneTextToSend.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		panelChat.add(scrollPaneTextToSend);
 
 		textAreaChat = new JTextArea();
@@ -809,7 +807,7 @@ public class GameFrame {
 
 		JScrollPane scrollPaneAreaChat = new JScrollPane(textAreaChat);
 		scrollPaneAreaChat.setBounds(10, 164, 220, 250);
-		scrollPaneAreaChat.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+		scrollPaneAreaChat.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 		panelChat.add(scrollPaneAreaChat);
 
 		panelBalls = new JPanel();
@@ -1024,7 +1022,7 @@ public class GameFrame {
 	}
 
 	public void setMessageToTextAreaChat(String message) {
-		getTextAreaChat().append(message + "\n");
+		getTextAreaChat().append(message);
 		getTextAreaChat().setCaretPosition(getTextAreaChat().getDocument().getLength());
 	}
 
