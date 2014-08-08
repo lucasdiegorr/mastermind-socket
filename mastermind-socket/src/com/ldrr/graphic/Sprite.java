@@ -55,4 +55,10 @@ public class Sprite {
 	public Icon getEmotion() {
 		return new ImageIcon(getClass().getResource("/emotion.png"));
 	}
+
+	public Icon getEmoticonByIndex(int emoticon) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -32,6 +32,15 @@ import java.util.Calendar;
 import java.util.Date;
 
 import javax.swing.JScrollPane;
+import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
+
+import java.awt.BorderLayout;
+import java.beans.PropertyVetoException;
+
+import javax.swing.JTextField;
+import javax.swing.border.SoftBevelBorder;
+import javax.swing.border.BevelBorder;
 
 public class GameFrame {
 
@@ -68,6 +77,11 @@ public class GameFrame {
 	private JLabel colorLabel6;
 	private JPanel panelMyAvatar;
 	private JPanel panelEnemyAvatar;
+	private JTextField internalTextFieldAddressServerGame;
+	private JTextField internalTextFielRoomServerGame;
+	private JLabel internalMessageGame;
+	private JInternalFrame internalFrame;
+	private JDesktopPane desktopPane;
 
 	/**
 	 * Create the application.
@@ -83,18 +97,24 @@ public class GameFrame {
 		this.myTurn = !challenging;
 		this.frmMastermindGame.setVisible(true);
 		this.clientController = new ClientController(GameFrame.this);
-		if (challenging) {
-			String address = JOptionPane
-					.showInputDialog("Insira o endereço de quem deseja desafiar.");
-			int port = Integer.parseInt(JOptionPane
-					.showInputDialog("Em qual sala ele está?"));
-			this.clientController.initGame(address, port);
-			this.clientController.initChat(address, port-1000);
-		} else {
+//		if (challenging) {
+//			String address = JOptionPane
+//					.showInputDialog("Insira o endereço de quem deseja desafiar.");
+//			int port = Integer.parseInt(JOptionPane
+//					.showInputDialog("Em qual sala ele está?"));
+//			this.clientController.initGame(address, port);
+//			this.clientController.initChat(address, port-1000);
+//		} else {
+//			this.clientController.initGame();
+//			this.clientController.initChat();
+//		}
+		if (!challenging) {
+			desktopPane.setVisible(false);
+			this.internalFrame.setVisible(false);
+			btnConnect.setEnabled(true);
 			this.clientController.initGame();
 			this.clientController.initChat();
 		}
-		
 	}
 
 	/**
@@ -732,6 +752,7 @@ public class GameFrame {
 		textAreaChat.setEditable(false);
 
 		btnConnect = new JButton("Conectar");
+		btnConnect.setEnabled(false);
 		btnConnect.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String nickname = JOptionPane.showInputDialog(null, "Insira o nome de usuário:");
@@ -951,6 +972,60 @@ public class GameFrame {
 		final JLabel labelClock = new JLabel();
 		labelClock.setBounds(24, 15, 62, 24);
 		panelTime.add(labelClock);
+		
+		desktopPane = new JDesktopPane();
+		desktopPane.setBorder(new SoftBevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		desktopPane.setBackground(new Color(128, 128, 128));
+		desktopPane.setBounds(6, 6, 253, 660);
+		frmMastermindGame.getContentPane().add(desktopPane);
+		desktopPane.setLayout(null);
+		
+		internalFrame = new JInternalFrame();
+		internalFrame.setTitle("Endere\u00E7o do Game Server");
+		internalFrame.setBounds(1, 205, 250, 250);
+		desktopPane.add(internalFrame);
+		
+		JPanel InternalPanelGame = new JPanel();
+		internalFrame.getContentPane().add(InternalPanelGame, BorderLayout.CENTER);
+		InternalPanelGame.setLayout(null);
+		
+		internalMessageGame = new JLabel("Qual o server do seu amigo?");
+		internalMessageGame.setBounds(32, 7, 175, 25);
+		InternalPanelGame.add(internalMessageGame);
+		
+		JLabel lblInternalAddressServerGame = new JLabel("Endere\u00E7o do Game Server:");
+		lblInternalAddressServerGame.setBounds(39, 39, 162, 25);
+		InternalPanelGame.add(lblInternalAddressServerGame);
+		
+		internalTextFieldAddressServerGame = new JTextField();
+		internalTextFieldAddressServerGame.setBounds(60, 71, 120, 30);
+		InternalPanelGame.add(internalTextFieldAddressServerGame);
+		internalTextFieldAddressServerGame.setColumns(10);
+		
+		JLabel internalLblRommServerGame = new JLabel("Sala:");
+		internalLblRommServerGame.setBounds(102, 108, 36, 25);
+		InternalPanelGame.add(internalLblRommServerGame);
+		
+		internalTextFielRoomServerGame = new JTextField();
+		internalTextFielRoomServerGame.setBounds(60, 140, 120, 30);
+		internalTextFielRoomServerGame.setColumns(10);
+		InternalPanelGame.add(internalTextFielRoomServerGame);
+		
+		JButton btnInitGame = new JButton("Iniciar");
+		btnInitGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String address = internalTextFieldAddressServerGame.getText();
+				int port = Integer.parseInt(internalTextFielRoomServerGame.getText());
+				clientController.initGame(address, port);
+				clientController.initChat(address, port-1000);
+				internalFrame.setVisible(false);
+				desktopPane.setVisible(false);
+				btnConnect.setEnabled(true);
+			}
+		});
+		btnInitGame.setBounds(73, 177, 93, 29);
+		InternalPanelGame.add(btnInitGame);
+		internalFrame.setVisible(true);
 
 		Timer timer = new Timer(1000, new ActionListener() {
 			private long time;
