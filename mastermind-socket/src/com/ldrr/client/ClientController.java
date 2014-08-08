@@ -98,5 +98,17 @@ public class ClientController {
 		}
 	}
 
+	public void setEmoticon(int emoticon) {
+		this.clientChat.setEmoticon(emoticon);
+	}
+
+	public void setEnemyNick(String nickName) {
+		this.gameFrame.setEnemyNick(nickName);
+	}
+
+	public void setEnemyEmoticon(int avatar) {
+		this.gameFrame.setEnemyAvatar(avatar);
+	}
+
 
 }

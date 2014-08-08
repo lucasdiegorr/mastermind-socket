@@ -16,7 +16,8 @@ import javax.swing.ImageIcon;
 public class Sprite {
 
 	private String[] colors = { "/red.png", "/green.png", "/orange.png", "/yellow.png","/blue.png", "/dark_blue.png","/black.png","/white.png", "/blanck_ball.png", "/Eval_Black.png", "/Eval_White.png", "/Eval_Blank.png", "/init_ball.png", "/secret_ball.png"};
-
+	private String[] emoticons = {"/smile.png", "/large_smile.png", "/glass.png", "/sun_glass.png", "/clow.png", "/surprise.png", "/fun.png", "/rage.png"};
+	
 	public static int RED = 0;
 	public static int GREEN = 1;
 	public static int ORANGE = 2;
@@ -52,13 +53,8 @@ public class Sprite {
 		return this.arrayColors.indexOf(color);
 	}
 	
-	public Icon getEmotion() {
-		return new ImageIcon(getClass().getResource("/emotion.png"));
-	}
-
-	public Icon getEmoticonByIndex(int emoticon) {
-		// TODO Auto-generated method stub
-		return null;
+	public Icon getEmoticonByIndex(int index_emoticon) {
+		return new ImageIcon(getClass().getResource(emoticons[index_emoticon]));
 	}
 
 }

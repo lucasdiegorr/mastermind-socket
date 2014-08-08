@@ -21,18 +21,21 @@ public class ClientChat implements Runnable {
 	private DataInputStream reader;
 	private String clientName;
 	private ClientController controller;
+	private int emoticon;
 
 	// CONSTRUCTORS
 	public ClientChat(ClientController controller) {
 		connect("127.0.0.1", 5000);
 		this.controller = controller;
 		this.clientName = "Anônimo";
+		this.emoticon = 0;
 	}
 
 	public ClientChat(String address, int port, ClientController controller) {
 		connect(address, port);
 		this.controller = controller;
 		this.clientName = "Anônimo";
+		this.emoticon = 0;
 	}
 
 	public ClientChat(String address, int port, String clientName,
@@ -40,6 +43,7 @@ public class ClientChat implements Runnable {
 		connect(address, port);
 		this.controller = controller;
 		this.clientName = clientName;
+		this.emoticon = 0;
 	}
 
 	private void connect(String address, int port) {
@@ -65,16 +69,23 @@ public class ClientChat implements Runnable {
 		try {
 			while (this.socket.isConnected()
 					&& ((messageFromServer = reader.readUTF()) != null)) {
-				this.controller.receivedMessageChat(messageFromServer);
+				receivedMessageChat(messageFromServer);
 			}
 		} catch (IOException e) {
 			disconnect();
 		}
 	}
 
+	private void receivedMessageChat(String messageFromServer) {
+		String serverPacket[] = messageFromServer.split("&");
+		this.controller.setEnemyNick(serverPacket[0]);
+		this.controller.setEnemyEmoticon(Integer.parseInt(serverPacket[1]));
+		this.controller.receivedMessageChat(serverPacket[0] + ": " + serverPacket[2]);
+	}
+
 	public void sendMessage(String string) {
 		try {
-			this.writer.writeUTF(clientName + ": " + string);
+			this.writer.writeUTF(clientName+ "&" + emoticon + "&" + string);
 			this.writer.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -110,5 +121,9 @@ public class ClientChat implements Runnable {
 	
 	public String getClientName() {
 		return clientName;
+	}
+
+	public void setEmoticon(int emoticon) {
+		this.emoticon = emoticon;
 	}
 }
