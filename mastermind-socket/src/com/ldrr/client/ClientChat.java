@@ -3,7 +3,7 @@ package com.ldrr.client;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Inet4Address;
+import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -134,7 +134,7 @@ public class ClientChat implements Runnable {
 	public String getAddress() {
 		String address = null;
 		try {
-			address = ""+ Inet4Address.getLocalHost().getHostAddress();
+			address = ""+ InetAddress.getLocalHost().getHostAddress();
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}

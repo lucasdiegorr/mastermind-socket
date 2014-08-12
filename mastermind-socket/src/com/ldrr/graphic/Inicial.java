@@ -31,6 +31,7 @@ public class Inicial {
 			e1.printStackTrace();
 		}
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					Inicial window = new Inicial();
@@ -68,8 +69,10 @@ public class Inicial {
 		btnDesafiante.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC,
 				13));
 		btnDesafiante.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				EventQueue.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						try {
 							new GameFrame(true);
@@ -86,8 +89,10 @@ public class Inicial {
 
 		JButton btnDesafiado = new JButton("Mestre das Senhas");
 		btnDesafiado.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				EventQueue.invokeLater(new Runnable() {
+					@Override
 					public void run() {
 						try {
 							ServerChat chat = new ServerChat();

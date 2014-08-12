@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.Timer;
 import javax.swing.TransferHandler;
+import javax.swing.WindowConstants;
 import javax.swing.border.TitledBorder;
 import javax.swing.JButton;
 
@@ -114,7 +115,7 @@ public class GameFrame {
 		getFrmMastermindGame().setResizable(false);
 		getFrmMastermindGame().setTitle("MasterMind Game");
 		getFrmMastermindGame().setBounds(100, 100, 524, 710);
-		getFrmMastermindGame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		getFrmMastermindGame().setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		getFrmMastermindGame().getContentPane().setLayout(null);
 
 		setPanelGameAddress(new JPanel());
@@ -152,6 +153,7 @@ public class GameFrame {
 
 		JButton btnInitGame = new JButton("Iniciar Desafio");
 		btnInitGame.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				String address = getTextFieldAddressGame().getText();
 				if (isChallenging()) {
@@ -833,6 +835,7 @@ public class GameFrame {
 
 		setBtnReconnect(new JButton("Reconectar"));
 		getBtnReconnect().addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				getClientController().initChat(getTextFieldAddressGame().getText(), Integer.parseInt(getTextFieldRoomGame().getText())-1000, getTextFieldNickName().getText());
 				getPanelMyAvatar().setBorder(new TitledBorder(null, getClientController().getNickName(), TitledBorder.CENTER, TitledBorder.BOTTOM, null, null));
@@ -1340,6 +1343,7 @@ public class GameFrame {
 		this.btnSendSequence = btnSendSequence;
 		btnSendSequence.setEnabled(false);
 		btnSendSequence.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if (isMyTurn()) {
 					getSequenceToSend()[0] = getSprite().getIndexByColor(getMove_1().getIcon());
@@ -1358,13 +1362,6 @@ public class GameFrame {
 	 */
 	private int[] getSequenceToSend() {
 		return sequenceToSend;
-	}
-
-	/**
-	 * @param sequenceToSend the sequenceToSend to set
-	 */
-	private void setSequenceToSend(int[] sequenceToSend) {
-		this.sequenceToSend = sequenceToSend;
 	}
 
 	/**
@@ -1648,6 +1645,7 @@ public class GameFrame {
 	private void setBtnDisconnect(JButton btnDisconnect) {
 		this.btnDisconnect = btnDisconnect;
 		btnDisconnect.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				getBtnDisconnect().setEnabled(false);
 				getBtnDisconnect().setVisible(false);
