@@ -73,6 +73,9 @@ public class ServerGame implements Runnable {
 					client = this.server.accept();
 					listClient.add(client);
 					new Thread(new ThreadServerGame(client, this)).start();
+					if (this.listClient.size() == 2) {
+						sendAlert("INIT_GAME");
+					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -80,12 +83,12 @@ public class ServerGame implements Runnable {
 		}
 	}
 
-	public void sendAlert() {
+	public void sendAlert(String ALERT) {
 		DataOutputStream writer = null;
 		for (Socket clients : listClient) {
 			try {
 				writer = new DataOutputStream(clients.getOutputStream());
-				writer.writeUTF("DISCONNECTED");
+				writer.writeUTF(ALERT);
 				writer.flush();
 			} catch (IOException e) {
 				System.out.println("Erro ao enviar mensagem.");
@@ -94,17 +97,4 @@ public class ServerGame implements Runnable {
 		}
 	}
 
-	public String getAddress() {
-		String address = null;
-		try {
-			address = "" + Inet4Address.getLocalHost().getHostAddress();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		return address;
-	}
-
-	public int getPort() {
-		return this.server.getLocalPort();
-	}
 }

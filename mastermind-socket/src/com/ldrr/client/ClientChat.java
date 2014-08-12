@@ -3,6 +3,7 @@ package com.ldrr.client;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
@@ -27,14 +28,12 @@ public class ClientChat implements Runnable {
 	public ClientChat(ClientController controller) {
 		connect("127.0.0.1", 5000);
 		this.controller = controller;
-		this.clientName = "Anônimo";
 		this.emoticon = 0;
 	}
 
 	public ClientChat(String address, int port, ClientController controller) {
 		connect(address, port);
 		this.controller = controller;
-		this.clientName = "Anônimo";
 		this.emoticon = 0;
 	}
 
@@ -78,9 +77,14 @@ public class ClientChat implements Runnable {
 
 	private void receivedMessageChat(String messageFromServer) {
 		String serverPacket[] = messageFromServer.split("&");
+		if (serverPacket[0].isEmpty()) {
+			serverPacket[0] = "Anônimo";
+			this.controller.receivedMessageChat(serverPacket[2]);
+		}else {
+			this.controller.receivedMessageChat(serverPacket[0] + ": " + serverPacket[2]);
+		}
 		this.controller.setEnemyNick(serverPacket[0]);
 		this.controller.setEnemyEmoticon(Integer.parseInt(serverPacket[1]));
-		this.controller.receivedMessageChat(serverPacket[0] + ": " + serverPacket[2]);
 	}
 
 	public void sendMessage(String string) {
@@ -125,5 +129,19 @@ public class ClientChat implements Runnable {
 
 	public void setEmoticon(int emoticon) {
 		this.emoticon = emoticon;
+	}
+	
+	public String getAddress() {
+		String address = null;
+		try {
+			address = ""+ Inet4Address.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		return address;
+	}
+	
+	public int getPort() {
+		return this.socket.getPort();
 	}
 }

@@ -2,10 +2,8 @@ package com.ldrr.server;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.net.Inet4Address;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,17 +81,4 @@ public class ServerChat implements Runnable {
 		}
 	}
 
-	public String getAddress() {
-		String address = null;
-		try {
-			address = "" + Inet4Address.getLocalHost().getHostAddress();
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-		return address;
-	}
-
-	public int getPort() {
-		return this.server.getLocalPort();
-	}
 }

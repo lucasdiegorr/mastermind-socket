@@ -3,6 +3,7 @@ package com.ldrr.client;
 import java.io.IOException;
 
 import com.ldrr.graphic.GameFrame;
+import com.ldrr.server.Commands;
 
 /**
  * 
@@ -29,6 +30,12 @@ public class ClientController {
 
 	public void initChat(String address, int port) {
 		this.clientChat = new ClientChat(address, port, this);
+		new Thread(clientChat).start();
+	}
+	
+	public void initChat(String address, int port, String nickName) {
+		this.clientChat = new ClientChat(address, port, this);
+		this.clientChat.setClientName(nickName);
 		new Thread(clientChat).start();
 	}
 	
@@ -86,18 +93,14 @@ public class ClientController {
 		}
 	}
 
-	public void Alert(boolean b) {
-		this.gameFrame.Alert(b);
+	public void Alert(Commands command) {
+		this.gameFrame.Alert(command);
 	}
 
-	public void sendAlert(boolean b) {
-		if (b) {
-			this.clientGame.sendMessage("DISCONNECTED");
-		} else {
-			this.clientGame.sendMessage("RESETGAME");
-		}
+	public void resetGame() {
+		this.clientGame.sendMessage(Commands.RESET_GAME.toString());
 	}
-
+	
 	public void setEmoticon(int emoticon) {
 		this.clientChat.setEmoticon(emoticon);
 	}
@@ -110,5 +113,19 @@ public class ClientController {
 		this.gameFrame.setEnemyAvatar(avatar);
 	}
 
+	public String addressChat() {
+		return this.clientChat.getAddress();
+	}
 
+	public String addressGame() {
+		return this.clientChat.getAddress();
+	}
+	
+	public int portChat() {
+		return this.clientChat.getPort();
+	}
+
+	public int portGame() {
+		return this.clientGame.getPort();
+	}
 }

@@ -3,8 +3,11 @@ package com.ldrr.client;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.net.Inet4Address;
 import java.net.Socket;
 import java.net.UnknownHostException;
+
+import com.ldrr.server.Commands;
 
 /**
  * 
@@ -63,19 +66,24 @@ public class ClientGame implements Runnable {
 			}
 		} catch (IOException e) {
 			disconnect();
-			this.controller.Alert(true);
+			this.controller.Alert(Commands.DISCONNECT);
 			e.printStackTrace();
 		}
 	}
 
 	private boolean isAlert(String messageFromServer) {
-		if (messageFromServer.equals("DISCONNECTED")) {
-			this.controller.Alert(true);
+		
+		if (Commands.DISCONNECT.toString().equals(messageFromServer)) {
+			this.controller.Alert(Commands.DISCONNECT);
 			return true;
-		} else if (messageFromServer.equals("RESETGAME")) {
-			this.controller.Alert(false);
+		} else if (Commands.RESET_GAME.toString().equals(messageFromServer)) {
+			this.controller.Alert(Commands.RESET_GAME);
+			return true;
+		}else if (Commands.INIT_GAME.toString().equals(messageFromServer)) {
+			this.controller.Alert(Commands.INIT_GAME);
 			return true;
 		}
+
 		return false;
 	}
 
@@ -136,4 +144,18 @@ public class ClientGame implements Runnable {
 		return writer;
 	}
 
+
+	public String getAddress() {
+		String address = null;
+		try {
+			address = ""+ Inet4Address.getLocalHost().getHostAddress();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+		return address;
+	}
+
+	public int getPort() {
+		return this.socket.getPort();
+	}
 }

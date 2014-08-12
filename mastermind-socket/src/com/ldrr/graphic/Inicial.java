@@ -5,7 +5,6 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -97,11 +96,6 @@ public class Inicial {
 							new Thread(game).start();
 							new GameFrame(false);
 							frame.setVisible(false);
-							JOptionPane.showMessageDialog(
-									null,
-									"Jogue com seu amigo informando onde está através dos endereços:\n"
-											+ "Game Server: "
-											+ game.getAddress() + " - Sala: "+ game.getPort());
 						} catch (Exception e) {
 							e.printStackTrace();
 						}

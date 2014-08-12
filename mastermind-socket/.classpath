@@ -4,7 +4,7 @@
 	<classpathentry including="Accept-icon.png|accept.png" kind="src" path="images"/>
 	<classpathentry kind="src" path="look"/>
 	<classpathentry including="Eval_Black.png|Eval_Blank.png|Eval_White.png|black.png|blanck_ball.png|blue.png|dark_blue.png|green.png|init_ball.png|orange.png|red.png|secret_ball.png|white.png|yellow.png" kind="src" path="sprites"/>
-	<classpathentry including="clow.png|emotion.png|fun.png|glass.png|large_smile.png|rage.png|smile.png|sun_glass.png|surprise.png" kind="src" path="emotions"/>
+	<classpathentry including="cancel.png|clow.png|emotion.png|fun.png|glass.png|large_smile.png|rage.png|smile.png|sun_glass.png|surprise.png" kind="src" path="emotions"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="lib" path="look/quaqua.jar"/>
 	<classpathentry kind="output" path="bin"/>
