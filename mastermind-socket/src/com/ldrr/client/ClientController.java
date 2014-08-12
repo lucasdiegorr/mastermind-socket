@@ -85,6 +85,7 @@ public class ClientController {
 
 	public void disconnectFromGame() {
 		try {
+			this.clientGame.sendMessage(Commands.DISCONNECT.toString());
 			this.clientGame.getReader().close();
 			this.clientGame.getWriter().close();
 			this.clientGame.getSocket().close();

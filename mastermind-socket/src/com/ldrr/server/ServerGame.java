@@ -72,7 +72,7 @@ public class ServerGame implements Runnable {
 					listClient.add(client);
 					new Thread(new ThreadServerGame(client, this)).start();
 					if (this.listClient.size() == 2) {
-						sendAlert("INIT_GAME");
+						sendAlert(Commands.INIT_GAME.toString());
 					}
 				} catch (Exception e) {
 					e.printStackTrace();

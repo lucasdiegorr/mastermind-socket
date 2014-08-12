@@ -57,4 +57,7 @@ public class Sprite {
 		return new ImageIcon(getClass().getResource(emoticons[index_emoticon]));
 	}
 
+	public Icon getAnimation() {
+		return new ImageIcon(getClass().getResource("/animation.gif"));
+	}
 }

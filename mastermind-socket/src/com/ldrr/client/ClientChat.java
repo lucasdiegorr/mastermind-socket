@@ -66,8 +66,7 @@ public class ClientChat implements Runnable {
 	public void run() {
 		String messageFromServer;
 		try {
-			while (this.socket.isConnected()
-					&& ((messageFromServer = reader.readUTF()) != null)) {
+			while (((messageFromServer = reader.readUTF()) != null)) {
 				receivedMessageChat(messageFromServer);
 			}
 		} catch (IOException e) {

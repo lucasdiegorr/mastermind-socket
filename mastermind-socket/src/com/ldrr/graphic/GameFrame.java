@@ -120,34 +120,37 @@ public class GameFrame {
 
 		setPanelGameAddress(new JPanel());
 		getPanelGameAddress().setBorder(new TitledBorder(null, "Informa\u00E7\u00F5es do Game Server", TitledBorder.CENTER, TitledBorder.TOP, null, new Color(128, 0, 0)));
-		getPanelGameAddress().setBounds(149, 185, 220, 287);
+		getPanelGameAddress().setBounds(134, 185, 250, 300);
 		getFrmMastermindGame().getContentPane().add(getPanelGameAddress());
 		getPanelGameAddress().setLayout(null);
 
 		JLabel lblAddressGame = new JLabel("Endere\u00E7o do Game Server");
-		lblAddressGame.setBounds(31, 30, 158, 24);
+		lblAddressGame.setForeground(Color.WHITE);
+		lblAddressGame.setBounds(45, 36, 158, 24);
 		getPanelGameAddress().add(lblAddressGame);
 
 		setTextFieldAddressGame(new JTextField());
-		getTextFieldAddressGame().setBounds(48, 57, 124, 31);
+		getTextFieldAddressGame().setBounds(62, 63, 124, 31);
 		getPanelGameAddress().add(getTextFieldAddressGame());
 		getTextFieldAddressGame().setColumns(10);
 
 		JLabel lblRoomGame = new JLabel("Sala:");
-		lblRoomGame.setBounds(92, 93, 36, 24);
+		lblRoomGame.setForeground(Color.WHITE);
+		lblRoomGame.setBounds(106, 99, 36, 24);
 		getPanelGameAddress().add(lblRoomGame);
 
 		setTextFieldRoomGame(new JTextField());
-		getTextFieldRoomGame().setBounds(48, 123, 124, 31);
+		getTextFieldRoomGame().setBounds(62, 129, 124, 31);
 		getPanelGameAddress().add(getTextFieldRoomGame());
 		getTextFieldRoomGame().setColumns(10);
 
 		JLabel lblNickName = new JLabel("Qual seu NickName?");
-		lblNickName.setBounds(45, 165, 129, 24);
+		lblNickName.setForeground(Color.WHITE);
+		lblNickName.setBounds(59, 171, 129, 24);
 		getPanelGameAddress().add(lblNickName);
 
 		setTextFieldNickName(new JTextField());
-		getTextFieldNickName().setBounds(48, 200, 124, 31);
+		getTextFieldNickName().setBounds(62, 206, 124, 31);
 		getPanelGameAddress().add(getTextFieldNickName());
 		getTextFieldNickName().setColumns(10);
 
@@ -183,8 +186,13 @@ public class GameFrame {
 				getBtnDisconnect().setEnabled(true);
 			}
 		});
-		btnInitGame.setBounds(55, 242, 109, 29);
+		btnInitGame.setBounds(69, 248, 109, 29);
 		getPanelGameAddress().add(btnInitGame);
+
+		JLabel lblAnimation = new JLabel();
+		lblAnimation.setBounds(0, 20, 245, 275);
+		lblAnimation.setIcon(getSprite().getAnimation());
+		getPanelGameAddress().add(lblAnimation);
 
 		JPanel panelGame = new JPanel();
 		panelGame.setBorder(new TitledBorder(null, "Game",
@@ -939,7 +947,7 @@ public class GameFrame {
 		getBtnSendSequence().setIcon(this.getSprite().getButton());
 
 		JPanel panelTime = new JPanel();
-		panelTime.setBorder(new TitledBorder(null, "Tempo", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panelTime.setBorder(new TitledBorder(null, "Tempo Total", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panelTime.setBounds(271, 498, 110, 45);
 		getFrmMastermindGame().getContentPane().add(panelTime);
 		panelTime.setLayout(null);
@@ -1025,7 +1033,7 @@ public class GameFrame {
 	}
 
 	private void verifyWinner(int[] colorResponse) {
-		
+
 		for (int i = 0; i < colorResponse.length; i++) {
 			if (colorResponse[i] != Sprite.BLACK) {
 				if (getIndex_move() == 10) {
@@ -1042,13 +1050,13 @@ public class GameFrame {
 		}
 
 		setPassword(password);
-		
+
 		if ((JOptionPane.showConfirmDialog(null, "Você ganhou!!!. PARABÉNS!!!.\nGostaria de reiniciar o jogo?") == JOptionPane.OK_OPTION)) {
 			resetGame();
 			getClientController().resetGame();
 			return;
 		}
-		
+
 		System.exit(0);
 	}
 
@@ -1098,18 +1106,34 @@ public class GameFrame {
 
 		this.password = null;
 
+		this.getColorLabel1().setBounds(4, 23, 35, 35);
+		this.getColorLabel1().setIcon(getSprite().getColorByIndex(Sprite.RED));
+		this.getColorLabel2().setBounds(43, 23, 35, 35);
+		this.getColorLabel2().setIcon(getSprite().getColorByIndex(Sprite.GREEN));
+		this.getColorLabel3().setBounds(82, 23, 35, 35);
+		this.getColorLabel3().setIcon(getSprite().getColorByIndex(Sprite.ORANGE));
+		this.getColorLabel4().setBounds(121, 23, 35, 35);
+		this.getColorLabel4().setIcon(getSprite().getColorByIndex(Sprite.YELLOW));
+		this.getColorLabel5().setBounds(160, 23, 35, 35);
+		this.getPanelBalls().add(this.getColorLabel4());
+		this.getColorLabel5().setIcon(getSprite().getColorByIndex(Sprite.BLUE));
+		this.getPanelBalls().add(this.getColorLabel5());
+		this.getColorLabel6().setBounds(199, 23, 35, 35);
+		this.getColorLabel6().setIcon(getSprite().getColorByIndex(Sprite.DARK_BLUE));
+		this.getPanelBalls().add(this.getColorLabel6());
+		this.getPanelBalls().repaint();
+		
 		this.getLblPassword1().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
 		this.getLblPassword2().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
 		this.getLblPassword3().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
 		this.getLblPassword4().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
-
-		this.getTimer().restart();
 
 		this.setIndex_move(0);
 		myTurnGame(true);
 	}
 
 	private void initGame() {
+		JOptionPane.showMessageDialog(null, "O outro jogador está online.\nVamos começar o jogo!!!");
 		getBtnSendSequence().setEnabled(true);
 		getTimer().start();
 	}
@@ -1149,6 +1173,13 @@ public class GameFrame {
 				getPanelBalls().remove(getColorLabel6());
 				getPanelBalls().repaint();
 			}else{
+
+				if (sequence.equals(new int[] {6,6,6,6})) {
+					JOptionPane.showMessageDialog(null, "Que pena, você perdeu.\n Parece que temos um novo mestre das senhas.");
+				}else if (!sequence.equals(new int[] {6,6,6,6}) && getIndex_move() == 9) {
+					JOptionPane.showMessageDialog(null, "Parabéns você ganhou!!!\n Continuando com seu reinado como MESTRE DAS SENHAS!");
+				}
+
 				for (int i = 0; i < sequence.length; i++) {
 					arrayLabelsResponse[getIndex_move()][i].setIcon(this.getSprite().getColorByIndex(sequence[i]+3));
 				}
@@ -1323,6 +1354,8 @@ public class GameFrame {
 				if (!(JOptionPane.showConfirmDialog(null, "Deseja mesmo encerrar o jogo?") == JOptionPane.OK_OPTION)) {
 					return;
 				}else {
+					getClientController().disconnectFromGame();
+					getClientController().disconnectFromChat();
 					System.exit(0);
 				}
 			}

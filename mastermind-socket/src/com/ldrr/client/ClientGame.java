@@ -56,8 +56,7 @@ public class ClientGame implements Runnable {
 	public void run() {
 		String messageFromServer;
 		try {
-			while (this.socket.isConnected()
-					&& ((messageFromServer = reader.readUTF()) != null)) {
+			while (((messageFromServer = reader.readUTF()) != null)) {
 				if (isAlert(messageFromServer)) {
 				} else {
 					int[] sequence = convertToIntArray(messageFromServer);
