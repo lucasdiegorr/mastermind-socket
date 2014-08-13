@@ -1056,7 +1056,8 @@ public class GameFrame {
 			getClientController().resetGame();
 			return;
 		}
-
+		getClientController().disconnectFromChat();
+		getClientController().disconnectFromGame();
 		System.exit(0);
 	}
 
@@ -1174,9 +1175,9 @@ public class GameFrame {
 				getPanelBalls().repaint();
 			}else{
 
-				if (sequence.equals(new int[] {6,6,6,6})) {
+				if ((sequence[0] == 6) && (sequence[1] == 6) && (sequence[2] == 6) && (sequence[3] == 6)) {
 					JOptionPane.showMessageDialog(null, "Que pena, você perdeu.\n Parece que temos um novo mestre das senhas.");
-				}else if (!sequence.equals(new int[] {6,6,6,6}) && getIndex_move() == 9) {
+				}else if (getIndex_move() == 9) {
 					JOptionPane.showMessageDialog(null, "Parabéns você ganhou!!!\n Continuando com seu reinado como MESTRE DAS SENHAS!");
 				}
 
@@ -1707,12 +1708,12 @@ public class GameFrame {
 			@Override
 			public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					if (!getTextToSend().getText().isEmpty()) {
+					if ((getTextToSend().getText().length() > 1)) {
 						getClientController().sendMessageChat(getTextToSend().getText());
 						getTextAreaChat().append("eu: " + getTextToSend().getText());
-						getTextToSend().setText(null);
-						getTextToSend().requestFocus();
 					}
+					getTextToSend().setText(null);
+					getTextToSend().requestFocus();
 				}
 			}
 		});
