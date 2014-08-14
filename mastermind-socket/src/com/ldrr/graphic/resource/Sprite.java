@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ldrr.graphic;
+package com.ldrr.graphic.resource;
 
 import java.util.ArrayList;
 

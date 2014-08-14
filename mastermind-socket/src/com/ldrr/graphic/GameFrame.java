@@ -13,6 +13,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.JButton;
 
 import com.ldrr.client.ClientController;
+import com.ldrr.graphic.resource.Sprite;
 import com.ldrr.server.generic.Commands;
 
 import java.awt.event.ActionListener;

@@ -11,7 +11,7 @@ import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
 
-import com.ldrr.client.MessageChat;
+import com.ldrr.server.generic.MessageChat;
 
 /**
  * 
