@@ -4,7 +4,7 @@
 package com.ldrr.server.generic;
 
 /**
- * @author Lucas
+ * @author Lucas Diego
  *
  */
 public class Server {

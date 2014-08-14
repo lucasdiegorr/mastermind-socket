@@ -52,7 +52,7 @@ public class ClientController {
 	}
 
 	public void sendMessageChat(String message) {
-		this.clientChat.sendMessage(message);
+		this.clientChat.sendMessageChat(message);
 	}
 
 	public void sendSequenceColors(int[] sequence) {

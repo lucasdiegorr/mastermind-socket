@@ -50,6 +50,15 @@ public class Client {
 		}
 	}
 	
+	public void sendMessage(String string) {
+		try {
+			this.getWriter().writeUTF(string);
+			this.getWriter().flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * @return the socket
 	 */

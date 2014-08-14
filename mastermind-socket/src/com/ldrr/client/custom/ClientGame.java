@@ -59,15 +59,6 @@ public class ClientGame extends Client implements Runnable {
 		sendMessage(stringSequence);
 	}
 
-	public void sendMessage(String string) {
-		try {
-			this.getWriter().writeUTF(string);
-			this.getWriter().flush();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	private boolean isAlert(String messageFromServer) {
 
 		if (Commands.DISCONNECT.toString().equals(messageFromServer)) {

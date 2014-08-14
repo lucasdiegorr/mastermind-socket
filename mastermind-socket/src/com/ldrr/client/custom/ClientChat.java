@@ -80,13 +80,13 @@ public class ClientChat extends Client implements Runnable {
 		this.getController().setEnemyEmoticon(message.getEmoticon());
 	}
 
-	public void sendMessage(String string) {
+	public void sendMessageChat(String string) {
 		MessageChat message = new MessageChat(this.getClientName(), this.getEmoticon(), string);
 		ByteArrayOutputStream byteArrayOutput = new ByteArrayOutputStream();
+		
 		try {
 			new ObjectOutputStream(byteArrayOutput).writeObject(message);
-			this.getWriter().writeUTF(Base64.encodeBase64String(byteArrayOutput.toByteArray()));
-			this.getWriter().flush();
+			sendMessage(Base64.encodeBase64String(byteArrayOutput.toByteArray()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
