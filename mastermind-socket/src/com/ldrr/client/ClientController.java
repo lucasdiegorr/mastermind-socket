@@ -3,7 +3,7 @@ package com.ldrr.client;
 import java.io.IOException;
 
 import com.ldrr.graphic.GameFrame;
-import com.ldrr.server.Commands;
+import com.ldrr.server.generic.Commands;
 
 /**
  * 

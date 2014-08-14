@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.ldrr.server;
+package com.ldrr.server.generic;
 
 /**
  * @author Lucas

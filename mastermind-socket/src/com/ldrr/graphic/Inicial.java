@@ -2,18 +2,20 @@ package com.ldrr.graphic;
 
 import java.awt.EventQueue;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
-import com.ldrr.server.ServerChat;
-import com.ldrr.server.ServerGame;
+import com.ldrr.server.custom.ServerChat;
+import com.ldrr.server.custom.ServerGame;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import java.awt.Color;
 
 public class Inicial {
 
@@ -60,6 +62,7 @@ public class Inicial {
 		frame.getContentPane().setLayout(null);
 
 		JLabel lblBemVindoAo = new JLabel("Bem vindo ao Jogo MasterMind");
+		lblBemVindoAo.setForeground(Color.WHITE);
 		lblBemVindoAo.setFont(new Font("Arial Black", Font.BOLD | Font.ITALIC,
 				22));
 		lblBemVindoAo.setBounds(61, 17, 422, 66);
@@ -114,8 +117,14 @@ public class Inicial {
 		frame.getContentPane().add(btnDesafiado);
 
 		JLabel lblQuemGostariaDe = new JLabel("Quem gostaria de ser?");
+		lblQuemGostariaDe.setForeground(Color.WHITE);
 		lblQuemGostariaDe.setFont(new Font("Arial Black", Font.PLAIN, 13));
 		lblQuemGostariaDe.setBounds(187, 81, 169, 24);
 		frame.getContentPane().add(lblQuemGostariaDe);
+		
+		JLabel label = new JLabel();
+		label.setBounds(0, 0, 545, 210);
+		label.setIcon(new ImageIcon(getClass().getResource("/gif-balls.gif")));
+		frame.getContentPane().add(label);
 	}
 }

@@ -13,7 +13,7 @@ import javax.swing.border.TitledBorder;
 import javax.swing.JButton;
 
 import com.ldrr.client.ClientController;
-import com.ldrr.server.Commands;
+import com.ldrr.server.generic.Commands;
 
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -125,8 +125,9 @@ public class GameFrame {
 		getPanelGameAddress().setLayout(null);
 
 		JLabel lblAddressGame = new JLabel("Endere\u00E7o do Game Server");
-		lblAddressGame.setForeground(Color.WHITE);
-		lblAddressGame.setBounds(45, 36, 158, 24);
+		lblAddressGame.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 18));
+		lblAddressGame.setForeground(Color.RED);
+		lblAddressGame.setBounds(10, 36, 230, 30);
 		getPanelGameAddress().add(lblAddressGame);
 
 		setTextFieldAddressGame(new JTextField());
@@ -135,8 +136,9 @@ public class GameFrame {
 		getTextFieldAddressGame().setColumns(10);
 
 		JLabel lblRoomGame = new JLabel("Sala:");
-		lblRoomGame.setForeground(Color.WHITE);
-		lblRoomGame.setBounds(106, 99, 36, 24);
+		lblRoomGame.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 18));
+		lblRoomGame.setForeground(Color.RED);
+		lblRoomGame.setBounds(100, 99, 49, 30);
 		getPanelGameAddress().add(lblRoomGame);
 
 		setTextFieldRoomGame(new JTextField());
@@ -145,8 +147,9 @@ public class GameFrame {
 		getTextFieldRoomGame().setColumns(10);
 
 		JLabel lblNickName = new JLabel("Qual seu NickName?");
-		lblNickName.setForeground(Color.WHITE);
-		lblNickName.setBounds(59, 171, 129, 24);
+		lblNickName.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 18));
+		lblNickName.setForeground(Color.RED);
+		lblNickName.setBounds(32, 171, 185, 30);
 		getPanelGameAddress().add(lblNickName);
 
 		setTextFieldNickName(new JTextField());
@@ -155,6 +158,7 @@ public class GameFrame {
 		getTextFieldNickName().setColumns(10);
 
 		JButton btnInitGame = new JButton("Iniciar Desafio");
+		btnInitGame.setForeground(Color.RED);
 		btnInitGame.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -189,10 +193,11 @@ public class GameFrame {
 		btnInitGame.setBounds(69, 248, 109, 29);
 		getPanelGameAddress().add(btnInitGame);
 
-		JLabel lblAnimation = new JLabel();
-		lblAnimation.setBounds(0, 20, 245, 275);
-		lblAnimation.setIcon(getSprite().getAnimation());
-		getPanelGameAddress().add(lblAnimation);
+		JLabel lblBack = new JLabel();
+		lblBack.setForeground(Color.BLACK);
+		lblBack.setBounds(0, 20, 245, 275);
+		lblBack.setIcon(this.getSprite().getImage());
+		getPanelGameAddress().add(lblBack);
 
 		JPanel panelGame = new JPanel();
 		panelGame.setBorder(new TitledBorder(null, "Game",
@@ -1128,7 +1133,12 @@ public class GameFrame {
 		this.getLblPassword2().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
 		this.getLblPassword3().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
 		this.getLblPassword4().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
-
+		
+		this.getMove_1().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
+		this.getMove_2().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
+		this.getMove_3().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
+		this.getMove_4().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
+		
 		this.setIndex_move(0);
 		myTurnGame(true);
 	}

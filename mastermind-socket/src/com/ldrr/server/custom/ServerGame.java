@@ -1,4 +1,7 @@
-package com.ldrr.server;
+/**
+ * 
+ */
+package com.ldrr.server.custom;
 
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -7,24 +10,22 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 
- */
+import com.ldrr.server.generic.Commands;
 
 /**
  * @author Lucas Diego
  * 
  */
-public class ServerChat implements Runnable {
+public class ServerGame implements Runnable {
 
 	private ServerSocket server;
 	private List<Socket> listClient = new ArrayList<Socket>();
 
-	public ServerChat() {
-		requestConnect(5000);
+	public ServerGame() {
+		requestConnect(6000);
 	}
 
-	public ServerChat(int port) {
+	public ServerGame(int port) {
 		requestConnect(port);
 	}
 
@@ -37,7 +38,7 @@ public class ServerChat implements Runnable {
 		}
 	}
 
-	public void sendMessage(String fromClient, ThreadServerChat thread) {
+	public void sendMessage(String fromClient, ThreadServerGame thread) {
 		DataOutputStream writer = null;
 		for (Socket othreClient : listClient) {
 			try {
@@ -71,12 +72,27 @@ public class ServerChat implements Runnable {
 				try {
 					client = this.server.accept();
 					listClient.add(client);
-					System.out.println("Server on e com " + this.listClient.size()
-							+ " usuarios.");
-					new Thread(new ThreadServerChat(client, this)).start();
-				} catch (IOException e) {
+					new Thread(new ThreadServerGame(client, this)).start();
+					if (this.listClient.size() == 2) {
+						sendAlert(Commands.INIT_GAME.toString());
+					}
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
+			}
+		}
+	}
+
+	public void sendAlert(String ALERT) {
+		DataOutputStream writer = null;
+		for (Socket clients : listClient) {
+			try {
+				writer = new DataOutputStream(clients.getOutputStream());
+				writer.writeUTF(ALERT);
+				writer.flush();
+			} catch (IOException e) {
+				System.out.println("Erro ao enviar mensagem.");
+				e.printStackTrace();
 			}
 		}
 	}

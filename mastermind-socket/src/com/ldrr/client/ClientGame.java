@@ -1,13 +1,19 @@
 package com.ldrr.client;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import com.ldrr.server.Commands;
+import org.apache.commons.codec.binary.Base64;
+
+import com.ldrr.server.generic.Commands;
 
 /**
  * 
@@ -27,24 +33,12 @@ public class ClientGame implements Runnable {
 	// CONSTRUCTORS
 	public ClientGame(ClientController controller) {
 		connect("127.0.0.1", 6000);
-		this.controller = controller;
+		this.setController(controller);
 	}
 
 	public ClientGame(String address, int port, ClientController controller) {
 		connect(address, port);
-		this.controller = controller;
-	}
-
-	private void connect(String address, int port) {
-		try {
-			this.socket = new Socket(address, port);
-			this.writer = new DataOutputStream(socket.getOutputStream());
-			this.reader = new DataInputStream(socket.getInputStream());
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		this.setController(controller);
 	}
 
 	/*
@@ -56,45 +50,27 @@ public class ClientGame implements Runnable {
 	public void run() {
 		String messageFromServer;
 		try {
-			while (((messageFromServer = reader.readUTF()) != null)) {
+			while (((messageFromServer = getReader().readUTF()) != null)) {
 				if (isAlert(messageFromServer)) {
 				} else {
 					int[] sequence = convertToIntArray(messageFromServer);
-					this.controller.receivedSequenceGame(sequence);
+					this.getController().receivedSequenceGame(sequence);
 				}
 			}
 		} catch (IOException e) {
 			disconnect();
-			this.controller.Alert(Commands.DISCONNECT);
+			this.getController().Alert(Commands.DISCONNECT);
 			e.printStackTrace();
 		}
 	}
 
-	private boolean isAlert(String messageFromServer) {
-		
-		if (Commands.DISCONNECT.toString().equals(messageFromServer)) {
-			this.controller.Alert(Commands.DISCONNECT);
-			return true;
-		} else if (Commands.RESET_GAME.toString().equals(messageFromServer)) {
-			this.controller.Alert(Commands.RESET_GAME);
-			return true;
-		}else if (Commands.INIT_GAME.toString().equals(messageFromServer)) {
-			this.controller.Alert(Commands.INIT_GAME);
-			return true;
-		}
-
-		return false;
-	}
-
-	public void sendSequence(int[] sequence) {
-		String sequensceString = convertToString(sequence);
-		sendMessage(sequensceString);
-	}
-
-	public void sendMessage(String string) {
+	private void connect(String address, int port) {
 		try {
-			this.writer.writeUTF(string);
-			this.writer.flush();
+			this.setSocket(new Socket(address, port));
+			this.setWriter(new DataOutputStream(getSocket().getOutputStream()));
+			this.setReader(new DataInputStream(getSocket().getInputStream()));
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -102,33 +78,64 @@ public class ClientGame implements Runnable {
 
 	private void disconnect() {
 		try {
-			this.reader.close();
-			this.writer.close();
-			this.socket.close();
+			this.getReader().close();
+			this.getWriter().close();
+			this.getSocket().close();
 		} catch (IOException e) {
 			System.out.println("Socket desconectado.");
 			e.printStackTrace();
 		}
 	}
 
-	private String convertToString(int[] sequence) {
-		String toConvert = "";
-		for (int i = 0; i < sequence.length; i++) {
-			toConvert += sequence[i];
+	private boolean isAlert(String messageFromServer) {
+
+		if (Commands.DISCONNECT.toString().equals(messageFromServer)) {
+			this.getController().Alert(Commands.DISCONNECT);
+			return true;
+		} else if (Commands.RESET_GAME.toString().equals(messageFromServer)) {
+			this.getController().Alert(Commands.RESET_GAME);
+			return true;
+		}else if (Commands.INIT_GAME.toString().equals(messageFromServer)) {
+			this.getController().Alert(Commands.INIT_GAME);
+			return true;
 		}
-		return toConvert;
+
+		return false;
+	}
+
+	public void sendSequence(int[] sequence) {
+		String stringSequence = convertToString(sequence);
+		sendMessage(stringSequence);
+	}
+
+	public void sendMessage(String string) {
+		try {
+			this.getWriter().writeUTF(string);
+			this.getWriter().flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private String convertToString(int[] sequence) {
+		ByteArrayOutputStream byteArrayOutput = new ByteArrayOutputStream();
+		try {
+			new ObjectOutputStream(byteArrayOutput).writeObject(sequence);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return Base64.encodeBase64String(byteArrayOutput.toByteArray());
 	}
 
 	private int[] convertToIntArray(String messageFromServer) {
-
-		char[] arrayCh = messageFromServer.toCharArray();
-		int[] arrayInt = new int[arrayCh.length];
-
-		for (int i = 0; i < arrayCh.length; i++) {
-			arrayInt[i] = Integer.parseInt(String.valueOf(arrayCh[i]));
+		ByteArrayInputStream byteArrayInput = new ByteArrayInputStream(Base64.decodeBase64(messageFromServer));
+		int[] sequence = null;
+		try {
+			sequence = (int[]) new ObjectInputStream(byteArrayInput).readObject();
+		} catch (ClassNotFoundException | IOException e) {
+			e.printStackTrace();
 		}
-
-		return arrayInt;
+		return sequence;
 	}
 
 	public Socket getSocket() {
@@ -143,6 +150,40 @@ public class ClientGame implements Runnable {
 		return writer;
 	}
 
+	/**
+	 * @return the controller
+	 */
+	public ClientController getController() {
+		return controller;
+	}
+
+	/**
+	 * @param controller the controller to set
+	 */
+	public void setController(ClientController controller) {
+		this.controller = controller;
+	}
+
+	/**
+	 * @param socket the socket to set
+	 */
+	public void setSocket(Socket socket) {
+		this.socket = socket;
+	}
+
+	/**
+	 * @param writer the writer to set
+	 */
+	public void setWriter(DataOutputStream writer) {
+		this.writer = writer;
+	}
+
+	/**
+	 * @param reader the reader to set
+	 */
+	public void setReader(DataInputStream reader) {
+		this.reader = reader;
+	}
 
 	public String getAddress() {
 		String address = null;
@@ -155,6 +196,6 @@ public class ClientGame implements Runnable {
 	}
 
 	public int getPort() {
-		return this.socket.getPort();
+		return this.getSocket().getPort();
 	}
 }

@@ -58,6 +58,10 @@ public class Sprite {
 	}
 
 	public Icon getAnimation() {
-		return new ImageIcon(getClass().getResource("/animation.gif"));
+		return new ImageIcon(getClass().getResource("/gif-balls.gif"));
+	}
+	
+	public Icon getImage() {
+		return new ImageIcon(getClass().getResource("/mastermind.jpg"));
 	}
 }

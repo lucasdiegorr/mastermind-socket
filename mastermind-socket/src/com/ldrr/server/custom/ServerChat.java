@@ -1,29 +1,36 @@
-/**
- * 
- */
-package com.ldrr.server;
+package com.ldrr.server.custom;
 
+import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.codec.binary.Base64;
+
+import com.ldrr.client.MessageChat;
+
+/**
+ * 
+ */
+
 /**
  * @author Lucas Diego
  * 
  */
-public class ServerGame implements Runnable {
+public class ServerChat implements Runnable {
 
 	private ServerSocket server;
 	private List<Socket> listClient = new ArrayList<Socket>();
 
-	public ServerGame() {
-		requestConnect(6000);
+	public ServerChat() {
+		requestConnect(5000);
 	}
 
-	public ServerGame(int port) {
+	public ServerChat(int port) {
 		requestConnect(port);
 	}
 
@@ -36,7 +43,7 @@ public class ServerGame implements Runnable {
 		}
 	}
 
-	public void sendMessage(String fromClient, ThreadServerGame thread) {
+	public void sendMessage(String fromClient, ThreadServerChat thread) {
 		DataOutputStream writer = null;
 		for (Socket othreClient : listClient) {
 			try {
@@ -70,24 +77,28 @@ public class ServerGame implements Runnable {
 				try {
 					client = this.server.accept();
 					listClient.add(client);
-					new Thread(new ThreadServerGame(client, this)).start();
-					if (this.listClient.size() == 2) {
-						sendAlert(Commands.INIT_GAME.toString());
-					}
-				} catch (Exception e) {
+					System.out.println("Server on e com " + this.listClient.size()
+							+ " usuarios.");
+					new Thread(new ThreadServerChat(client, this)).start();
+				} catch (IOException e) {
 					e.printStackTrace();
 				}
 			}
 		}
 	}
 
-	public void sendAlert(String ALERT) {
+	public void sendAlertDisconnect(ThreadServerChat threadServerChat) {
+		MessageChat message = new MessageChat(null, 8, "O outro usuário saiu do chat\n");
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
 		DataOutputStream writer = null;
-		for (Socket clients : listClient) {
+		for (Socket othreClient : listClient) {
 			try {
-				writer = new DataOutputStream(clients.getOutputStream());
-				writer.writeUTF(ALERT);
-				writer.flush();
+				if (!othreClient.equals(threadServerChat.getClient())) {
+					writer = new DataOutputStream(othreClient.getOutputStream());
+					new ObjectOutputStream(baos).writeObject(message);
+					writer.writeUTF(Base64.encodeBase64String(baos.toByteArray()));
+					writer.flush();
+				}
 			} catch (IOException e) {
 				System.out.println("Erro ao enviar mensagem.");
 				e.printStackTrace();
