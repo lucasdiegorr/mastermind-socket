@@ -32,7 +32,7 @@ public class ThreadServerGame extends ThreadServer implements Runnable {
 		String fromClient = null;
 		try {
 			while (!this.getClient().isClosed()	&& ((fromClient = getReader().readUTF()) != null)) {
-				this.getServer().sendMessage(fromClient, this);
+				this.getServer().sendMessageGame(fromClient, this);
 			}
 		} catch (IOException e) {
 			this.getServer().disconnect(this.getClient());

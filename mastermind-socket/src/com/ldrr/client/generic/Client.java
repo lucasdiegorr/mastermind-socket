@@ -17,6 +17,7 @@ import com.ldrr.client.ClientController;
  *
  */
 public class Client {
+	
 	private Socket socket;
 	private DataOutputStream writer;
 	private DataInputStream reader;
@@ -27,6 +28,13 @@ public class Client {
 		this.setController(controller);
 	}
 	
+	/**
+	 * Create a socket with the specifications and port address passed as a parameter
+	 * Cria um socket com as as especificações de porta e endereço passados como parâmetro
+	 * 
+	 * @param address - ip address to make the connection - endereço de ip para realizar a conexão
+	 * @param port - port for the connection - porta para a conexão
+	 */
 	private void connect(String address, int port) {
 		try {
 			this.setSocket(new Socket(address, port));
@@ -39,6 +47,10 @@ public class Client {
 		}
 	}
 	
+	/**
+	 * Closes all connections
+	 * Fecha todas as conexões
+	 */
 	public void disconnect() {
 		try {
 			this.getReader().close();
@@ -50,9 +62,14 @@ public class Client {
 		}
 	}
 	
-	public void sendMessage(String string) {
+	/**
+	 * Send a message to the server
+	 * Envia uma mensagem ao servidor
+	 * @param message - message to be sent - mensagem a ser enviada
+	 */
+	public void sendMessage(String message) {
 		try {
-			this.getWriter().writeUTF(string);
+			this.getWriter().writeUTF(message);
 			this.getWriter().flush();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -108,6 +125,9 @@ public class Client {
 		this.controller = controller;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String getAddress() {
 		String address = null;
 		try {
@@ -118,6 +138,9 @@ public class Client {
 		return address;
 	}
 
+	/**
+	 * @return
+	 */
 	public int getPort() {
 		return this.getSocket().getPort();
 	}

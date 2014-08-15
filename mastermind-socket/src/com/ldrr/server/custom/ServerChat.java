@@ -1,17 +1,14 @@
 package com.ldrr.server.custom;
 
 import java.io.ByteArrayOutputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
 
 import com.ldrr.server.generic.MessageChat;
+import com.ldrr.server.generic.Server;
 
 /**
  * 
@@ -21,64 +18,38 @@ import com.ldrr.server.generic.MessageChat;
  * @author Lucas Diego
  * 
  */
-public class ServerChat implements Runnable {
-
-	private ServerSocket server;
-	private List<Socket> listClient = new ArrayList<Socket>();
+public class ServerChat extends Server implements Runnable {
 
 	public ServerChat() {
-		requestConnect(5000);
+		super(5000);
 	}
 
 	public ServerChat(int port) {
-		requestConnect(port);
+		super(port);
 	}
 
-	private void requestConnect(int port) {
-		try {
-			this.server = new ServerSocket(port);
-		} catch (IOException e) {
-			requestConnect(port++);
-			e.printStackTrace();
-		}
+	/**
+	 * Send a message to all registered except the server to the client that sent
+	 * the message to server customers
+	 * Envia uma mensagem a todos os clientes cadastrados no servidor exceto ao 
+	 * cliente que enviou a mensagem ao servidor
+	 * @param message - message to be sent - mensagem a ser enviada
+	 * @param thread - Thread responsible for the clientChat that sent the message 
+	 * - Thread responsavel pelo clienteChat que enviou a mensagem
+	 */
+	public void sendMessageChat(String message, ThreadServerChat thread) {
+		sendMessage(message, thread.getClient());
 	}
 
-	public void sendMessage(String fromClient, ThreadServerChat thread) {
-		DataOutputStream writer = null;
-		for (Socket othreClient : listClient) {
-			try {
-				if (!othreClient.equals(thread.getClient())) {
-					writer = new DataOutputStream(othreClient.getOutputStream());
-					writer.writeUTF(fromClient);
-					writer.flush();
-				}
-			} catch (IOException e) {
-				System.out.println("Erro ao enviar mensagem.");
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public void disconnect(Socket client) {
-
-		listClient.remove(client);
-		try {
-			client.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
 
 	@Override
 	public void run() {
 		while (true) {
-			while (this.listClient.size() < 2) {
+			while (this.getListClient().size() < 2) {
 				Socket client;
 				try {
-					client = this.server.accept();
-					listClient.add(client);
-					System.out.println("Server on e com " + this.listClient.size()
-							+ " usuarios.");
+					client = this.getServer().accept();
+					getListClient().add(client);
 					new Thread(new ThreadServerChat(client, this)).start();
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -87,22 +58,19 @@ public class ServerChat implements Runnable {
 		}
 	}
 
+	/**
+	 * Send a message to disconnect a client from the server Chat
+	 * Envia uma mensagem informando a desconexão de um client do servidor de Chat
+	 * @param threadServerChat - Thread responsible for the clientChat
+	 */
 	public void sendAlertDisconnect(ThreadServerChat threadServerChat) {
 		MessageChat message = new MessageChat(null, 8, "O outro usuário saiu do chat\n");
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		DataOutputStream writer = null;
-		for (Socket othreClient : listClient) {
-			try {
-				if (!othreClient.equals(threadServerChat.getClient())) {
-					writer = new DataOutputStream(othreClient.getOutputStream());
-					new ObjectOutputStream(baos).writeObject(message);
-					writer.writeUTF(Base64.encodeBase64String(baos.toByteArray()));
-					writer.flush();
-				}
-			} catch (IOException e) {
-				System.out.println("Erro ao enviar mensagem.");
-				e.printStackTrace();
-			}
+		try {
+			new ObjectOutputStream(baos).writeObject(message);
+			sendAlert(Base64.encodeBase64String(baos.toByteArray()));
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 

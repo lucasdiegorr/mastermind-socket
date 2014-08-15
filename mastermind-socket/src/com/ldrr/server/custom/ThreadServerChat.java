@@ -33,7 +33,7 @@ public class ThreadServerChat extends ThreadServer implements Runnable {
 		try {
 			while (!this.getClient().isClosed()
 					&& ((fromClient = getReader().readUTF()) != null)) {
-				this.getServer().sendMessage(fromClient, this);
+				this.getServer().sendMessageChat(fromClient, this);
 			}
 		} catch (IOException e) {
 			this.getServer().disconnect(this.getClient());

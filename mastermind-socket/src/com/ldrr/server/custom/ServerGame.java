@@ -3,96 +3,53 @@
  */
 package com.ldrr.server.custom;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.ldrr.server.generic.Commands;
+import com.ldrr.server.generic.Server;
 
 /**
  * @author Lucas Diego
  * 
  */
-public class ServerGame implements Runnable {
-
-	private ServerSocket server;
-	private List<Socket> listClient = new ArrayList<Socket>();
+public class ServerGame extends Server implements Runnable {
 
 	public ServerGame() {
-		requestConnect(6000);
+		super(6000);
 	}
 
 	public ServerGame(int port) {
-		requestConnect(port);
+		super(port);
 	}
 
-	private void requestConnect(int port) {
-		try {
-			this.server = new ServerSocket(port);
-		} catch (IOException e) {
-			requestConnect(port++);
-			e.printStackTrace();
-		}
-	}
-
-	public void sendMessage(String fromClient, ThreadServerGame thread) {
-		DataOutputStream writer = null;
-		for (Socket othreClient : listClient) {
-			try {
-				if (!othreClient.equals(thread.getClient())) {
-					writer = new DataOutputStream(othreClient.getOutputStream());
-					writer.writeUTF(fromClient);
-					writer.flush();
-				}
-			} catch (IOException e) {
-				System.out.println("Erro ao enviar mensagem.");
-				e.printStackTrace();
-			}
-		}
-	}
-
-	public void disconnect(Socket client) {
-
-		listClient.remove(client);
-		try {
-			client.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	/**
+	 * Send a message to all registered except the server to the client that sent
+	 * the message to server customers
+	 * Envia uma mensagem a todos os clientes cadastrados no servidor exceto ao 
+	 * cliente que enviou a mensagem ao servidor
+	 * @param message - message to be sent - mensagem a ser enviada
+	 * @param thread - Thread responsible for the clientGame that sent the message 
+	 * - Thread responsavel pelo clientGame que enviou a mensagem
+	 */
+	public void sendMessageGame(String fromClient, ThreadServerGame thread) {
+		sendMessage(fromClient, thread.getClient());
 	}
 
 	@Override
 	public void run() {
 		while (true) {
-			while (this.listClient.size() < 2) {
+			while (this.getListClient().size() < 2) {
 				Socket client;
 				try {
-					client = this.server.accept();
-					listClient.add(client);
+					client = this.getServer().accept();
+					getListClient().add(client);
 					new Thread(new ThreadServerGame(client, this)).start();
-					if (this.listClient.size() == 2) {
+					if (this.getListClient().size() == 2) {
 						sendAlert(Commands.INIT_GAME.toString());
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			}
-		}
-	}
-
-	public void sendAlert(String ALERT) {
-		DataOutputStream writer = null;
-		for (Socket clients : listClient) {
-			try {
-				writer = new DataOutputStream(clients.getOutputStream());
-				writer.writeUTF(ALERT);
-				writer.flush();
-			} catch (IOException e) {
-				System.out.println("Erro ao enviar mensagem.");
-				e.printStackTrace();
 			}
 		}
 	}

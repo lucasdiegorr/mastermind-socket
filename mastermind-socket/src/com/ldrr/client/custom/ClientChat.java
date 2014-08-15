@@ -59,6 +59,12 @@ public class ClientChat extends Client implements Runnable {
 		}
 	}
 
+	/**
+	 * Treatment makes the messages received by the server
+	 * Faz o tratamento as mensagens recebidas pelo servidor
+	 * @param messageFromServer - message received by the server 
+	 * - mensagem recebida pelo servidor
+	 */
 	private void receivedMessageChat(String messageFromServer) {
 		ByteArrayInputStream byteArrayInput = new ByteArrayInputStream(Base64.decodeBase64(messageFromServer));
 		MessageChat message = null; 
@@ -80,8 +86,13 @@ public class ClientChat extends Client implements Runnable {
 		this.getController().setEnemyEmoticon(message.getEmoticon());
 	}
 
-	public void sendMessageChat(String string) {
-		MessageChat message = new MessageChat(this.getClientName(), this.getEmoticon(), string);
+	/**
+	 * Send a message to the server
+	 * Envia uma mensagem ao servidor
+	 * @param stringMessage - message to be sent - mensagem a ser enviada
+	 */
+	public void sendMessageChat(String stringMessage) {
+		MessageChat message = new MessageChat(this.getClientName(), this.getEmoticon(), stringMessage);
 		ByteArrayOutputStream byteArrayOutput = new ByteArrayOutputStream();
 		
 		try {
@@ -93,14 +104,23 @@ public class ClientChat extends Client implements Runnable {
 	}
 
 
+	/**
+	 * @param clientName the clientName to set
+	 */
 	public void setClientName(String clientName) {
 		this.clientName = clientName;
 	}
 
+	/**
+	 * @return the clientName
+	 */
 	public String getClientName() {
 		return clientName;
 	}
 
+	/**
+	 * @param emoticon the emoticon to set
+	 */
 	public void setEmoticon(int emoticon) {
 		this.emoticon = emoticon;
 	}
