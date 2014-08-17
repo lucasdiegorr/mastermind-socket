@@ -91,6 +91,12 @@ public class GameFrame {
 		initGamePerfil(challenging);
 	}
 
+	/**
+	 * Initializes the player profile
+	 * Inicializa o perfil do jogador
+	 * 
+	 * @param challenging
+	 */
 	private void initGamePerfil(boolean challenging) {
 		this.setChallenging(challenging);
 		this.setMyTurn(!challenging);
@@ -832,7 +838,7 @@ public class GameFrame {
 		panelChat.add(getPanelEnemyAvatar());
 		getPanelEnemyAvatar().setLayout(null);
 
-		enemyAvatar = new JLabel();
+		setEnemyAvatar(new JLabel());
 		getEnemyAvatar().setBounds(7, 0, 66, 66);
 		getEnemyAvatar().setIcon(this.getSprite().getEmoticonByIndex(0));
 		getPanelEnemyAvatar().add(getEnemyAvatar());
@@ -971,6 +977,11 @@ public class GameFrame {
 		}));
 	}
 
+	/**
+	 * Initializes the balls move according to the player's profile
+	 * Inicializa as bolas de movimento de acordo com o perfil do jogador
+	 * 
+	 */
 	private void initBalls() {
 
 		if (!isChallenging() && !isFirstMoviment()) {
@@ -987,20 +998,48 @@ public class GameFrame {
 		}
 	}
 
+	/**
+	 * Populates the array of movements
+	 * Popula o array de movimentos
+	 * 
+	 * @param label
+	 * @param i
+	 * @param j
+	 */
 	private void populeArrayChance(JLabel label, int i, int j) {
 		this.arrayLabelsSequence[i][j] = label;
 	}
 
+	/**
+	 * Populates the array response
+	 * Popula o array de resposta
+	 * 
+	 * @param label
+	 * @param i
+	 * @param j
+	 */
 	private void populeArrayResponse(JLabel label, int i, int j) {
 		this.arrayLabelsResponse[i][j] = label;
 	}
 
+	/**
+	 * Displays the area of the chat message received by the chat server
+	 * Exibe na area do chat a mensagem recebida pelo servidor de chat
+	 * 
+	 * @param message
+	 */
 	public void setMessageToTextAreaChat(String message) {
 		getTextAreaChat().append(message);
 		getTextAreaChat().setCaretPosition(getTextAreaChat().getDocument().getLength());
 
 	}
 
+	/**
+	 * Displays on the screen the sequence received by the game server
+	 * Exibe na tela a sequencia recebida pelo servidor de jogo
+	 * 
+	 * @param colorResponse
+	 */
 	public void setSequenceToGameView(int[] colorResponse) {
 
 		if (isChallenging()) {
@@ -1023,6 +1062,12 @@ public class GameFrame {
 
 	}
 
+	/**
+	 * Receive alerts sent by the game server and announces to player
+	 * Recebe os alertas enviados pelo servidor do jogo e anuncia para o jogador
+	 * 
+	 * @param command
+	 */
 	public void Alert(Commands command) {
 		if (command.equals(Commands.DISCONNECT)) {
 			JOptionPane
@@ -1031,6 +1076,7 @@ public class GameFrame {
 					"O outro jogador desconectou e como não dá pra jogar só...\nO jogo vai encerrar.\nAté a próxima.");
 			System.exit(0);
 		} else if (command.equals(Commands.RESET_GAME)) {
+			JOptionPane.showMessageDialog(null, "O jogo irá reiniciar.");
 			resetGame();
 
 		}else{
@@ -1038,6 +1084,16 @@ public class GameFrame {
 		}
 	}
 
+	/**
+	 * Verifies that the received sequence becomes the winner challenging. 
+	 * If the received sequence is the correct questions if the challenger would restart the game 
+	 * or would like waxing. Otherwise, it does nothing
+	 * Verifica se a sequencia recebida torna o desafiante vencedor. Caso a sequencia recebida for a 
+	 * correta questiona o desafiante se gostaria de reiniciar o jogo ou se gostaria de encerar. 
+	 * Caso contrario, não faz nada
+	 * 
+	 * @param colorResponse
+	 */
 	private void verifyWinner(int[] colorResponse) {
 
 		for (int i = 0; i < colorResponse.length; i++) {
@@ -1067,6 +1123,10 @@ public class GameFrame {
 		System.exit(0);
 	}
 
+	/**
+	 * Restarts the graphics relating to player movement
+	 * Reinicia os elementos gráficos relativos ao movimento do jogador
+	 */
 	private void resetMoviment() {
 		if (isChallenging()) {
 			getMove_1().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
@@ -1081,6 +1141,12 @@ public class GameFrame {
 		}
 	}
 
+	/**
+	 * Enables the player's turn along with all the graphic elements of your screen
+	 * Habilita o turno do jogador juntamente com todos os elementos gráficos de sua tela
+	 * 
+	 * @param turn
+	 */
 	private void myTurnGame(boolean turn) {
 		if (turn) {
 
@@ -1102,6 +1168,11 @@ public class GameFrame {
 		setMyTurn(turn);
 	}
 
+	/**
+	 * Restarts the game as much graphics as variables
+	 * Reinicia o jogo, tanto elementos gráficos quanto variáveis
+	 * 
+	 */
 	private void resetGame() {
 		for (int i = 0; i < 10; i++) {
 			for (int j = 0; j < 4; j++) {
@@ -1109,6 +1180,7 @@ public class GameFrame {
 				getArrayLabelsResponse()[i][j].setIcon(null);
 			}
 		}
+		
 		this.setFirstMoviment(true);
 
 		this.password = null;
@@ -1129,75 +1201,47 @@ public class GameFrame {
 		this.getColorLabel6().setIcon(getSprite().getColorByIndex(Sprite.DARK_BLUE));
 		this.getPanelBalls().add(this.getColorLabel6());
 		this.getPanelBalls().repaint();
-		
+
 		this.getLblPassword1().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
 		this.getLblPassword2().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
 		this.getLblPassword3().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
 		this.getLblPassword4().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
-		
+
 		this.getMove_1().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
 		this.getMove_2().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
 		this.getMove_3().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
 		this.getMove_4().setIcon(this.getSprite().getColorByIndex(Sprite.INIT_BALL));
-		
+
 		this.setIndex_move(0);
 		myTurnGame(true);
 	}
 
+	/**
+	 * This method sends a message to the player announcing the beginning of the game and triggers the timer
+	 * Este método envia uma mensagem ao jogador anunciando o inicio do jogo e dispara o cronometro
+	 * 
+	 */
 	private void initGame() {
 		JOptionPane.showMessageDialog(null, "O outro jogador está online.\nVamos começar o jogo!!!");
 		getBtnSendSequence().setEnabled(true);
 		getTimer().start();
 	}
 
+	/**
+	 * Checks the sequence of moves pieces before it is sent to the other player. If valid,
+	 * sends the sequence of parts and restarts the player's movements, giving time to the next player
+	 * Checa a sequencia de peças jogadas antes desta ser enviada ao outro jogador. Caso seja válida, 
+	 * envia a sequencia de peças e reinicia os movimentos do jogador, dando a vez para o próximo jogador
+	 * 
+	 * @param sequence
+	 */
 	private void checkSequenceToSend(int[] sequence) {
 
 		if (isChallenging()) {
-			for (int i = 0; i < sequence.length; i++) {
-				for (int j = i+1; j < sequence.length; j++) {
-					if (sequence[i] == sequence[j]) {
-						JOptionPane.showMessageDialog(null, "Desculpe mas não são permitidas peças repetidas.\nTente outra combinação por favor.");
-						return;
-					}
-				}
-			}
-			for (int i = 0; i < sequence.length; i++) {
-				this.arrayLabelsSequence[this.getIndex_move()][i].setIcon(this.getSprite().getColorByIndex(sequence[i]));
-			}
+			checkSequenceToSendChallenging(sequence);
 		}else {
-			if (isFirstMoviment()) {
-				for (int i = 0; i < sequence.length; i++) {
-					for (int j = i+1; j < sequence.length; j++) {
-						if (sequence[i] == sequence[j]) {
-							JOptionPane.showMessageDialog(null, "Desculpe mas não são permitidas peças repetidas.\nTente outra combinação por favor.");
-							return;
-						}
-					}
-				}
-				getColorLabel1().setBounds(33, 23, 35, 35);
-				getColorLabel1().setIcon(getSprite().getColorByIndex(Sprite.BLACK));
-				getColorLabel2().setBounds(101, 23, 35, 35);
-				getColorLabel2().setIcon(getSprite().getColorByIndex(Sprite.WHITE));
-				getColorLabel3().setBounds(169, 23, 35, 35);
-				getColorLabel3().setIcon(getSprite().getColorByIndex(Sprite.BLANCK_BALL));
-				getPanelBalls().remove(getColorLabel4());
-				getPanelBalls().remove(getColorLabel5());
-				getPanelBalls().remove(getColorLabel6());
-				getPanelBalls().repaint();
-			}else{
-
-				if ((sequence[0] == 6) && (sequence[1] == 6) && (sequence[2] == 6) && (sequence[3] == 6)) {
-					JOptionPane.showMessageDialog(null, "Que pena, você perdeu.\n Parece que temos um novo mestre das senhas.");
-				}else if (getIndex_move() == 9) {
-					JOptionPane.showMessageDialog(null, "Parabéns você ganhou!!!\n Continuando com seu reinado como MESTRE DAS SENHAS!");
-				}
-
-				for (int i = 0; i < sequence.length; i++) {
-					arrayLabelsResponse[getIndex_move()][i].setIcon(this.getSprite().getColorByIndex(sequence[i]+3));
-				}
-			}
+			checkSequenceToSendMaster(sequence);
 		}
-
 
 		getClientController().sendSequenceColors(sequence);
 		myTurnGame(false);
@@ -1209,6 +1253,76 @@ public class GameFrame {
 		}
 	}
 
+	/**
+	 * Checks the sequence of moves before it is sent to the challenging parts. If valid, 
+	 * sends the sequence of parts and restarts the player's movements, giving time to the next player
+	 * Checa a sequencia de peças jogadas antes desta ser enviada ao desafiante. Caso seja válida, 
+	 * envia a sequencia de peças e reinicia os movimentos do jogador, dando a vez para o próximo jogador
+	 * 
+	 * @param sequence
+	 */
+	private void checkSequenceToSendMaster(int[] sequence) {
+		if (isFirstMoviment()) {
+			for (int i = 0; i < sequence.length; i++) {
+				for (int j = i+1; j < sequence.length; j++) {
+					if (sequence[i] == sequence[j]) {
+						JOptionPane.showMessageDialog(null, "Desculpe mas não são permitidas peças repetidas.\nTente outra combinação por favor.");
+						return;
+					}
+				}
+			}
+			getColorLabel1().setBounds(33, 23, 35, 35);
+			getColorLabel1().setIcon(getSprite().getColorByIndex(Sprite.BLACK));
+			getColorLabel2().setBounds(101, 23, 35, 35);
+			getColorLabel2().setIcon(getSprite().getColorByIndex(Sprite.WHITE));
+			getColorLabel3().setBounds(169, 23, 35, 35);
+			getColorLabel3().setIcon(getSprite().getColorByIndex(Sprite.BLANCK_BALL));
+			getPanelBalls().remove(getColorLabel4());
+			getPanelBalls().remove(getColorLabel5());
+			getPanelBalls().remove(getColorLabel6());
+			getPanelBalls().repaint();
+		}else{
+
+			if ((sequence[0] == 6) && (sequence[1] == 6) && (sequence[2] == 6) && (sequence[3] == 6)) {
+				JOptionPane.showMessageDialog(null, "Que pena, você perdeu.\n Parece que temos um novo mestre das senhas.");
+			}else if (getIndex_move() == 9) {
+				JOptionPane.showMessageDialog(null, "Parabéns você ganhou!!!\n Continuando com seu reinado como MESTRE DAS SENHAS!");
+			}
+
+			for (int i = 0; i < sequence.length; i++) {
+				arrayLabelsResponse[getIndex_move()][i].setIcon(this.getSprite().getColorByIndex(sequence[i]+3));
+			}
+		}
+	}
+
+	/**
+	 * Checks the sequence of moves pieces before it is sent to the master. If valid, 
+	 * sends the sequence of parts and restarts the player's movements, giving time to the next player
+	 * Checa a sequencia de peças jogadas antes desta ser enviada ao mestre. Caso seja válida, 
+	 * envia a sequencia de peças e reinicia os movimentos do jogador, dando a vez para o próximo jogador
+	 * 
+	 * @param sequence
+	 */
+	private void checkSequenceToSendChallenging(int[] sequence) {
+		for (int i = 0; i < sequence.length; i++) {
+			for (int j = i+1; j < sequence.length; j++) {
+				if (sequence[i] == sequence[j]) {
+					JOptionPane.showMessageDialog(null, "Desculpe mas não são permitidas peças repetidas.\nTente outra combinação por favor.");
+					return;
+				}
+			}
+		}
+		for (int i = 0; i < sequence.length; i++) {
+			this.arrayLabelsSequence[this.getIndex_move()][i].setIcon(this.getSprite().getColorByIndex(sequence[i]));
+		}
+	}
+
+	/**
+	 * Saves the password defined by the master password in the password variable and shows the corresponding label for the master
+	 * Grava o password definido pelo mestre na variável password e mostra o password na label correspondente para o mestre
+	 * 
+	 * @param sequenceToSend
+	 */
 	private void setPassword(int[] sequenceToSend) {
 		password = sequenceToSend;
 		getLblPassword1().setIcon(this.getSprite().getColorByIndex(sequenceToSend[0]));
@@ -1218,6 +1332,9 @@ public class GameFrame {
 		this.setFirstMoviment(false);
 	}
 
+	/**
+	 * @return the index_move++
+	 */
 	private int getIndex_movePlus() {
 		return index_move++;
 	}
@@ -1884,5 +2001,12 @@ public class GameFrame {
 	 */
 	private void setBtnReconnect(JButton btnReconnect) {
 		this.btnReconnect = btnReconnect;
+	}
+
+	/**
+	 * @param enemyAvatar the enemyAvatar to set
+	 */
+	public void setEnemyAvatar(JLabel enemyAvatar) {
+		this.enemyAvatar = enemyAvatar;
 	}
 }
