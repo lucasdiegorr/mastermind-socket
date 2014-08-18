@@ -1238,9 +1238,13 @@ public class GameFrame {
 	private void checkSequenceToSend(int[] sequence) {
 
 		if (isChallenging()) {
-			checkSequenceToSendChallenging(sequence);
+			if (!checkSequenceToSendChallenging(sequence)) {
+				return;
+			}
 		}else {
-			checkSequenceToSendMaster(sequence);
+			if (!checkSequenceToSendMaster(sequence)) {
+				return;
+			}
 		}
 
 		getClientController().sendSequenceColors(sequence);
@@ -1261,13 +1265,13 @@ public class GameFrame {
 	 * 
 	 * @param sequence
 	 */
-	private void checkSequenceToSendMaster(int[] sequence) {
+	private boolean checkSequenceToSendMaster(int[] sequence) {
 		if (isFirstMoviment()) {
 			for (int i = 0; i < sequence.length; i++) {
 				for (int j = i+1; j < sequence.length; j++) {
 					if (sequence[i] == sequence[j]) {
 						JOptionPane.showMessageDialog(null, "Desculpe mas não são permitidas peças repetidas.\nTente outra combinação por favor.");
-						return;
+						return false;
 					}
 				}
 			}
@@ -1293,6 +1297,7 @@ public class GameFrame {
 				arrayLabelsResponse[getIndex_move()][i].setIcon(this.getSprite().getColorByIndex(sequence[i]+3));
 			}
 		}
+		return true;
 	}
 
 	/**
@@ -1303,18 +1308,19 @@ public class GameFrame {
 	 * 
 	 * @param sequence
 	 */
-	private void checkSequenceToSendChallenging(int[] sequence) {
+	private boolean checkSequenceToSendChallenging(int[] sequence) {
 		for (int i = 0; i < sequence.length; i++) {
 			for (int j = i+1; j < sequence.length; j++) {
 				if (sequence[i] == sequence[j]) {
 					JOptionPane.showMessageDialog(null, "Desculpe mas não são permitidas peças repetidas.\nTente outra combinação por favor.");
-					return;
+					return false;
 				}
 			}
 		}
 		for (int i = 0; i < sequence.length; i++) {
 			this.arrayLabelsSequence[this.getIndex_move()][i].setIcon(this.getSprite().getColorByIndex(sequence[i]));
 		}
+		return true;
 	}
 
 	/**

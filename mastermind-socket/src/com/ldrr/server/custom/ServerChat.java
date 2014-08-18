@@ -47,15 +47,13 @@ public class ServerChat extends Server implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			while (this.getListClient().size() < 2) {
-				Socket client;
-				try {
-					client = this.getServer().accept();
-					getListClient().add(client);
-					new Thread(new ThreadServerChat(client, this)).start();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			Socket client;
+			try {
+				client = this.getServer().accept();
+				getListClient().add(client);
+				new Thread(new ThreadServerChat(client, this)).start();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}
