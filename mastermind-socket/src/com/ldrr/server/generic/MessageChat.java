@@ -1,18 +1,18 @@
-/**
- * 
- */
 package com.ldrr.server.generic;
 
 import java.io.Serializable;
 
 /**
- * @author Lucas
- *
+ * All source code and required libraries are found at the following link:
+ * https://github.com/lucasdiegorr/mastermind-socket 
+ * branch: beta
+ */
+
+/**
+ * @author Lucas Diego
+ * 
  */
 public class MessageChat implements Serializable{
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private String nickName;
 	private int emoticon;

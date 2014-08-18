@@ -8,7 +8,9 @@ import com.ldrr.graphic.GameFrame;
 import com.ldrr.server.generic.Commands;
 
 /**
- * 
+ * All source code and required libraries are found at the following link:
+ * https://github.com/lucasdiegorr/mastermind-socket 
+ * branch: beta
  */
 
 /**
@@ -130,5 +132,9 @@ public class ClientController {
 
 	public int portGame() {
 		return this.clientGame.getPort();
+	}
+
+	public boolean isConnect() {
+		return ((this.clientChat != null) && (this.clientGame != null))?true:false;
 	}
 }

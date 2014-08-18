@@ -8,6 +8,11 @@ import java.util.ArrayList;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
+/**
+ * All source code and required libraries are found at the following link:
+ * https://github.com/lucasdiegorr/mastermind-socket 
+ * branch: beta
+ */
 
 /**
  * @author Lucas Diego
@@ -62,6 +67,6 @@ public class Sprite {
 	}
 	
 	public Icon getImage() {
-		return new ImageIcon(getClass().getResource("/mastermind.jpg"));
+		return new ImageIcon(getClass().getResource("/gray.png"));
 	}
 }

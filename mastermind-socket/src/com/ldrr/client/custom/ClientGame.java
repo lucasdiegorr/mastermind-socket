@@ -13,7 +13,9 @@ import com.ldrr.client.generic.Client;
 import com.ldrr.server.generic.Commands;
 
 /**
- * 
+ * All source code and required libraries are found at the following link:
+ * https://github.com/lucasdiegorr/mastermind-socket 
+ * branch: beta
  */
 
 /**
@@ -54,11 +56,24 @@ public class ClientGame extends Client implements Runnable {
 	}
 
 
+	/**
+	 * The server sends a sequence
+	 * Envia uma sequencia ao servidor
+	 * 
+	 * @param sequence
+	 */
 	public void sendSequence(int[] sequence) {
 		String stringSequence = convertToString(sequence);
 		sendMessage(stringSequence);
 	}
 
+	/**
+	 * Checks whether the sending of a message by the server occurred. If so alerts the controller, otherwise does nothing
+	 * Verifica se ocorreu o envio de uma mensagem por parte do servidor. Caso positivo alerta o controller, caso contrario nao faz nada
+	 * 
+	 * @param messageFromServer
+	 * @return
+	 */
 	private boolean isAlert(String messageFromServer) {
 
 		if (Commands.DISCONNECT.toString().equals(messageFromServer)) {
@@ -75,6 +90,13 @@ public class ClientGame extends Client implements Runnable {
 		return false;
 	}
 
+	/**
+	 * Converts an int array into a string through the Base64 algorithm
+	 * Converte um array de int em uma string atraves do algoritmo Base64
+	 * @param sequence 
+	 * @return sequence - int array containing the Base64 algorithm converted by Base64 
+	 * - contendo o array de int convertido pelo algoritmo Base64
+	 */
 	private String convertToString(int[] sequence) {
 		ByteArrayOutputStream byteArrayOutput = new ByteArrayOutputStream();
 		try {
@@ -85,6 +107,14 @@ public class ClientGame extends Client implements Runnable {
 		return Base64.encodeBase64String(byteArrayOutput.toByteArray());
 	}
 
+	/**
+	 * Converts a string to an int array
+	 * Converte uma string em um array de int
+	 * @param messageFromServer - a string containing an int array to be converted 
+	 * - uma string contendo um array de int a ser convertida
+	 * @return int[] - an array containing the values ​​of the string passed as parameter 
+	 * - um array contendo os valores da string passada como parametro
+ 	 */
 	private int[] convertToIntArray(String messageFromServer) {
 		ByteArrayInputStream byteArrayInput = new ByteArrayInputStream(Base64.decodeBase64(messageFromServer));
 		int[] sequence = null;

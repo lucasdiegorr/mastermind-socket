@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.ldrr.server.generic;
 
 import java.io.DataOutputStream;
@@ -11,8 +8,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * All source code and required libraries are found at the following link:
+ * https://github.com/lucasdiegorr/mastermind-socket 
+ * branch: beta
+ */
+
+/**
  * @author Lucas Diego
- *
+ * 
  */
 public class Server {
 

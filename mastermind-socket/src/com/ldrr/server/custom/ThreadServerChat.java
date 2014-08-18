@@ -6,7 +6,9 @@ import java.net.Socket;
 import com.ldrr.server.generic.ThreadServer;
 
 /**
- * 
+ * All source code and required libraries are found at the following link:
+ * https://github.com/lucasdiegorr/mastermind-socket 
+ * branch: beta
  */
 
 /**

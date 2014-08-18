@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.ldrr.server.custom;
 
 import java.io.IOException;
@@ -8,6 +5,12 @@ import java.net.Socket;
 
 import com.ldrr.server.generic.Commands;
 import com.ldrr.server.generic.ThreadServer;
+
+/**
+ * All source code and required libraries are found at the following link:
+ * https://github.com/lucasdiegorr/mastermind-socket 
+ * branch: beta
+ */
 
 /**
  * @author Lucas Diego

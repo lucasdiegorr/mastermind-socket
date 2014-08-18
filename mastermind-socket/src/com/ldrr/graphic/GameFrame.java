@@ -39,6 +39,17 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
+/**
+ * All source code and required libraries are found at the following link:
+ * https://github.com/lucasdiegorr/mastermind-socket 
+ * branch: beta
+ */
+
+/**
+ * @author Lucas Diego
+ * 
+ */
+
 public class GameFrame {
 
 	private ClientController clientController;
@@ -1148,23 +1159,12 @@ public class GameFrame {
 	 * @param turn
 	 */
 	private void myTurnGame(boolean turn) {
-		if (turn) {
+		getBtnSendSequence().setEnabled(true);
+		getMove_1().setEnabled(true);
+		getMove_2().setEnabled(true);
+		getMove_3().setEnabled(true);
+		getMove_4().setEnabled(true);
 
-			getBtnSendSequence().setEnabled(true);
-			getMove_1().setEnabled(true);
-			getMove_2().setEnabled(true);
-			getMove_3().setEnabled(true);
-			getMove_4().setEnabled(true);
-
-		} else {
-
-			getBtnSendSequence().setEnabled(true);
-			getMove_1().setEnabled(true);
-			getMove_2().setEnabled(true);
-			getMove_3().setEnabled(true);
-			getMove_4().setEnabled(true);
-
-		}
 		setMyTurn(turn);
 	}
 
@@ -1180,7 +1180,7 @@ public class GameFrame {
 				getArrayLabelsResponse()[i][j].setIcon(null);
 			}
 		}
-		
+
 		this.setFirstMoviment(true);
 
 		this.password = null;
@@ -1483,8 +1483,10 @@ public class GameFrame {
 				if (!(JOptionPane.showConfirmDialog(null, "Deseja mesmo encerrar o jogo?") == JOptionPane.OK_OPTION)) {
 					return;
 				}else {
-					getClientController().disconnectFromGame();
-					getClientController().disconnectFromChat();
+					if (getClientController().isConnect()) {
+						getClientController().disconnectFromGame();
+						getClientController().disconnectFromChat();
+					}
 					System.exit(0);
 				}
 			}

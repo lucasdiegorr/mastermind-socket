@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry including="accept.png|animation.gif|gif-balls.gif|mastermind.jpg" kind="src" path="images"/>
+	<classpathentry including="accept.png|animation.gif|gif-balls.gif|gray.png|mastermind.jpg" kind="src" path="images"/>
 	<classpathentry kind="src" path="look"/>
 	<classpathentry including="Eval_Black.png|Eval_Blank.png|Eval_White.png|black.png|blanck_ball.png|blue.png|dark_blue.png|green.png|init_ball.png|orange.png|red.png|secret_ball.png|white.png|yellow.png" kind="src" path="sprites"/>
 	<classpathentry including="cancel.png|clow.png|emotion.png|fun.png|glass.png|large_smile.png|rage.png|smile.png|sun_glass.png|surprise.png" kind="src" path="emotions"/>

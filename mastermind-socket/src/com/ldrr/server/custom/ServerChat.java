@@ -11,7 +11,9 @@ import com.ldrr.server.generic.MessageChat;
 import com.ldrr.server.generic.Server;
 
 /**
- * 
+ * All source code and required libraries are found at the following link:
+ * https://github.com/lucasdiegorr/mastermind-socket 
+ * branch: beta
  */
 
 /**

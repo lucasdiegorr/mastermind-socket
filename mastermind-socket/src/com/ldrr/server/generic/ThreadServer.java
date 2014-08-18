@@ -1,6 +1,3 @@
-/**
- * 
- */
 package com.ldrr.server.generic;
 
 import java.io.DataInputStream;
@@ -8,8 +5,14 @@ import java.io.IOException;
 import java.net.Socket;
 
 /**
- * @author Lucas
- *
+ * All source code and required libraries are found at the following link:
+ * https://github.com/lucasdiegorr/mastermind-socket 
+ * branch: beta
+ */
+
+/**
+ * @author Lucas Diego
+ * 
  */
 public class ThreadServer {
 	

@@ -17,6 +17,17 @@ import java.awt.event.ActionEvent;
 import java.awt.Font;
 import java.awt.Color;
 
+/**
+ * All source code and required libraries are found at the following link:
+ * https://github.com/lucasdiegorr/mastermind-socket 
+ * branch: beta
+ */
+
+/**
+ * @author Lucas Diego
+ * 
+ */
+
 public class Inicial {
 
 	private JFrame frame;
